@@ -1,0 +1,14 @@
+Package: cronR
+Type: Package
+Title: A package for interacting with cron jobs from R.
+Version: 0.1.0
+Date: 2013-11-23
+Author: Kevin Ushey
+Maintainer: Kevin Ushey <kevinushey@gmail.com>
+Description: This package allows you to create, edit, and remove cron
+    jobs on your unix-alike system. It provides a set of easy-to-use wrappers
+    to crontab.
+Imports:
+    digest
+License: MIT + file LICENSE
+SystemRequirements: cron
