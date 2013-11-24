@@ -1,5 +1,7 @@
 ##' List the contents of a crontab
 ##' 
+##' We only list the contents that are handeld by \code{cronR}.
+##' 
 ##' @param id Return cron jobs with a certain \code{id}.
 ##' @param tags Return cron jobs with a certain (set of) tags.
 ##' @param user The user's crontab to display
@@ -19,14 +21,14 @@ cron_ls <- function(id, tags, user="") {
   } else {
     if (missing(id)) id <- "__MISSING__"
     if (missing(tags)) tags <- "__MISSING__"
-    keep <- crontab[ sapply(crontab, function(x) {
+    keep <- crontab$cronR[ sapply(crontab$cronR, function(x) {
       (x$id %in% id) | (any(x$tags %in% tags))
     })]
     if (!length(keep)) {
       message("No cron jobs found.")
       return (invisible(NULL))
     }
-    output <- deparse_crontab(keep)
+    output <- deparse_crontab(list(cronR=keep, other=NULL))
     message(output)
     return (invisible(keep))
   }

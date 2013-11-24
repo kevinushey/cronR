@@ -13,6 +13,7 @@ cron_ls(id, tags, user = "")
   \item{user}{The user's crontab to display}
 }
 \description{
-  List the contents of a crontab
+  We only list the contents that are handeld by
+  \code{cronR}.
 }
 

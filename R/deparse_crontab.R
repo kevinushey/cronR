@@ -1,6 +1,6 @@
 ## deparse a parsed crontab
 deparse_crontab <- function(parsed_crontab) {
-  paste( collapse="\n", sapply(parsed_crontab, function(x) {
+  cronR <- paste( collapse="\n", sapply(parsed_crontab$cronR, function(x) {
     description <- unlist( strsplit( wrap(x$desc, 76 - 6), "\n", fixed=TRUE ) )
     if (length(description) > 1) {
       description[2:length(description)] <- 
@@ -16,4 +16,6 @@ deparse_crontab <- function(parsed_crontab) {
       ""
     ))
   }))
+  other <- parsed_crontab$other
+  return (paste(cronR, other, sep="\n", collapse="\n"))
 }

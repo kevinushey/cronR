@@ -1,14 +1,18 @@
 ## parse the cron jobs as returned by crontab
-parse_crontab <- function(user="") {
-  if (user == "") {
-    crontab <- suppressWarnings(
-      system("crontab -l", intern=TRUE, ignore.stderr=TRUE)
-    )
-  } else {
-    crontab <- suppressWarnings(
-      system(paste("crontab -u", user, "-l", intern=TRUE, ignore.stderr=TRUE))
-    )
+parse_crontab <- function(crontab, user="") {
+  
+  if (missing(crontab)) {
+    if (user == "") {
+      crontab <- suppressWarnings(
+        system("crontab -l", intern=TRUE, ignore.stderr=TRUE)
+      )
+    } else {
+      crontab <- suppressWarnings(
+        system(paste("crontab -u", user, "-l", intern=TRUE, ignore.stderr=TRUE))
+      )
+    }
   }
+  
   if (!length(crontab)) {
     stop("No crontab available")
   } else {
@@ -49,7 +53,22 @@ parse_crontab <- function(user="") {
       ))
     })
     
-    return (parsed_jobs)
+    ## add in those jobs not managed by cronR
+    covered_lines <- unlist( mapply( function(x, y) seq(x, y), starts, ends ) )
+    uncovered_lines <- 1:length(crontab)
+    uncovered_lines <- uncovered_lines[ !(uncovered_lines %in% covered_lines) ]
+    if (length(uncovered_lines)) {
+      other_lines <- paste(crontab[uncovered_lines], collapse="\n")
+    } else {
+      other_lines <- NULL
+    }
+    
+    jobs <- list(
+      cronR=parsed_jobs,
+      other=other_lines
+    )
+    
+    return (jobs)
     
   }
   

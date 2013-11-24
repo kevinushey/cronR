@@ -10,6 +10,19 @@ cron_load <- function(file, user="") {
     system(paste("crontab -u", user, file))
   }
   crontab <- parse_crontab(user=user)
-  message("Crontab with ", length(crontab), " cronR jobs loaded.")
+  if (is.null(crontab$other)) {
+    message("Crontab with ", length(crontab$cronR), " cronR job",
+      if (length(crontab$cronR) != 1) "s" else "", 
+      "loaded.")
+  } else {
+    n_other_jobs <- length(grep("^[# ]", inver=TRUE,
+      unlist(strsplit(crontab$other, "\n", fixed=TRUE))
+    ))
+    message("Crontab with ", length(crontab$cronR), " cronR job",
+      if (length(crontab$cronR) != 1) "s" else "", " and ",
+      n_other_jobs, " other job",
+      if (n_other_jobs != 1) "s" else "", " loaded.")
+  }
+  
   return (invisible(crontab))
 }

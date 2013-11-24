@@ -12,14 +12,24 @@
 cron_rm <- function(id, dry_run=FALSE, user="") {
   
   crontab <- parse_crontab(user=user)
-  to_keep <- sapply(crontab, function(x) {
-    !(x$id %in% id)
-  })
+  if (!is.null(crontab$cronR)) {
+    to_keep <- sapply(crontab$cronR, function(x) {
+      !(x$id %in% id)
+    })
+  }
   
   n_removed <- sum(!to_keep)
-  message("Removed ", n_removed, " cron job", if (n_removed != 1) "s" else "", ".")
+  if (n_removed == 0) {
+    message("No cron job with id matched to '", id, "' found.")
+    return (invisible(NULL))
+  } else {
+    message("Removed ", n_removed, " cron job", if (n_removed != 1) "s" else "", ".")
+  }
   
-  new_crontab <- crontab[to_keep]
+  new_crontab <- list(
+    cronR=crontab$cronR[to_keep],
+    other=crontab$other
+  )
   deparsed <- deparse_crontab(new_crontab)
   
   if (!dry_run) {
