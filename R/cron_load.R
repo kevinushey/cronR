@@ -1,6 +1,7 @@
 ##' Load a crontab from file
 ##' 
 ##' @param file The file location of a crontab.
+##' @param user The user for whom we will be loading a crontab.
 ##' @export
 cron_load <- function(file, user="") {
   if (user == "") {

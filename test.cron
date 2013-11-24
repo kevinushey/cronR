@@ -1,12 +1,13 @@
 ## cronR job
 ## id:   abc
 ## tags: test1, test2
-## call: cron_add(command = "testing!", id = "abc", tags = c("test1",    "test2"))
+## desc: This is a really long description that will hopefully be wrapped
+##   appropriately.
 0 0 * * * testing!
 
 ## cronR job
 ## id:   123
-## tags: 
-## call: cron_add(command = "testing2!", id = "123")
+## tags: test2, test3
+## desc: 
 0 0 * * * testing2!
  

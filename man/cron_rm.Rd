@@ -12,6 +12,8 @@ cron_rm(id, dry_run = FALSE, user = "")
   \item{dry_run}{Boolean; if \code{TRUE} we do not submit
   the cron job; instead we return the parsed text that
   would be submitted as a cron job.}
+
+  \item{user}{The user whose crontab we will be modifying.}
 }
 \description{
   Use this command to remove a cron job added by

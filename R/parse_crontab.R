@@ -36,12 +36,15 @@ parse_crontab <- function(user="") {
       tags <- unlist( strsplit( split=", ",
         gsub("#+ *tags: *", "", grep("^#+ *tags:", cronR_job, value=TRUE))
       ) )
-      call <- gsub("#+ *call: *", "", grep("^#+ *call:", cronR_job, value=TRUE))
+      desc_start <- grep("^#+ *desc:", cronR_job)
+      desc <- paste( collapse=" ",
+        gsub("## +|## desc: ", "", cronR_job[desc_start:(length(cronR_job)-1)])
+      )
       job <- cronR_job[length(cronR_job)]
       return (list(
         id=id,
         tags=tags,
-        call=call,
+        desc=desc,
         job=job
       ))
     })

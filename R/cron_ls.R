@@ -8,11 +8,7 @@ cron_ls <- function(id, tags, user="") {
   
   crontab <- try(parse_crontab(user=user), silent=TRUE)
   if (inherits(crontab, "try-error")) {
-    if (user == "")
-      current_user <- Sys.getenv("USER")
-    else
-      current_user <- user
-    message("No cron jobs available in crontab for user '", current_user, "'.")
+    no_crontab_error(user=user)
     return (invisible(NULL))
   }
   

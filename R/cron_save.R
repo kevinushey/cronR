@@ -4,9 +4,10 @@
 ##'   \code{crontab}.
 ##' @param overwrite logical; should we overwrite the file at path \code{file}
 ##'   if it already exists?
+##' @param user The user whose cron jobs we will be saving.
 ##' @export
 ##' @seealso \code{\link{file.copy}}
-cron_save <- function(file, overwrite=FALSE, ..., user="") {
+cron_save <- function(file, overwrite=FALSE, user="") {
   crontab <- parse_crontab(user=user)
   tempfile <- tempfile()
   on.exit( unlink(tempfile) )

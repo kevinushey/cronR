@@ -7,6 +7,7 @@
 ##'   matched in the file.
 ##' @param dry_run Boolean; if \code{TRUE} we do not submit the cron job; 
 ##'   instead we return the parsed text that would be submitted as a cron job.
+##' @param user The user whose crontab we will be modifying.
 ##' @export
 cron_rm <- function(id, dry_run=FALSE, user="") {
   
