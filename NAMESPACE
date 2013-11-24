@@ -1,4 +1,7 @@
 export(cron_add)
+export(cron_clear)
+export(cron_load)
 export(cron_ls)
 export(cron_rm)
+export(cron_save)
 importFrom(digest,digest)

@@ -32,12 +32,36 @@
 ##'   the command.
 ##' @param id An id, or name, to give to the cronjob task, for easier
 ##'   revision in the future.
+##' @param tags A set of tags, used for easy listing and retrieval
+##'   of cron jobs.
 ##' @param dry_run Boolean; if \code{TRUE} we do not submit the cron job; 
 ##'   instead we return the parsed text that would be submitted as a cron job.
 ##' @importFrom digest digest
 ##' @export
 cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week, months,
-  id, dry_run=FALSE) {
+  id, tags="", dry_run=FALSE, user="") {
+  
+  crontab <- tryCatch(parse_crontab(user=user),
+    error=function(e) {
+      return( character() )
+    })
+  
+  ## make sure the id generated / used is unique
+  call <- match.call()
+  if (missing(id)) {
+    id <- digest(call)
+  }
+  
+  if (length(crontab)) {
+    if (id %in% sapply(crontab, "[[", "id")) {
+      stop("Can't add this job: id '", id, 
+        "' already exists in your crontab!")
+    }
+  }
+  
+  call_str <- paste( collapse="", 
+    gsub(" +$", "", capture.output(call) )
+  )
   
   job <- list(
     min=NULL,
@@ -114,16 +138,11 @@ cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week
   if (any(is.null(job)))
     stop("NULL commands in 'job!' Job is: ", paste(job, collapse=" ", sep=" "))
   
-  call <- match.call()
-  if (missing(id)) {
-    id <- digest( list(call, runif(1)) )
-  }
-  
-  call_str <- capture.output(call)
-  
   header <- paste( sep="\n", collapse="\n",
-    paste("## id:   ", id),
-    paste("## call: ", call_str)
+    "## cronR job",
+    paste0("## id:   ", id),
+    paste0("## tags: ", paste(tags, collapse=", ")),
+    paste0("## call: ", call_str)
   )
   
   job_str <- paste( sep="\n", collapse="\n",

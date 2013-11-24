@@ -4,10 +4,10 @@
 \title{Make a simple cron job}
 \usage{
 cron_add(command, frequency = "daily", at, days_of_month, days_of_week,
-  months, id, dry_run = FALSE)
+  months, id, tags = "", dry_run = FALSE, user = "")
 
 cronjob(command, frequency = "daily", at, days_of_month, days_of_week, months,
-  id, dry_run = FALSE)
+  id, tags = "", dry_run = FALSE, user = "")
 }
 \arguments{
   \item{command}{A command to execute.}
@@ -32,6 +32,9 @@ cronjob(command, frequency = "daily", at, days_of_month, days_of_week, months,
 
   \item{id}{An id, or name, to give to the cronjob task,
   for easier revision in the future.}
+
+  \item{tags}{A set of tags, used for easy listing and
+  retrieval of cron jobs.}
 
   \item{dry_run}{Boolean; if \code{TRUE} we do not submit
   the cron job; instead we return the parsed text that

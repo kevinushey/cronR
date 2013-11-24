@@ -1,7 +1,6 @@
 # cronR
 
-`cronR` is a simple R package for managing your `crontab` file, and adding,
-modifying and removing cron jobs.
+`cronR` is a simple R package for managing your cron jobs.
 
 Install me with:
 

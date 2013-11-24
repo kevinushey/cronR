@@ -1,0 +1,12 @@
+## cronR job
+## id:   abc
+## tags: test1, test2
+## call: cron_add(command = "testing!", id = "abc", tags = c("test1",    "test2"))
+0 0 * * * testing!
+
+## cronR job
+## id:   123
+## tags: 
+## call: cron_add(command = "testing2!", id = "123")
+0 0 * * * testing2!
+ 

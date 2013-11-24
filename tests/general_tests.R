@@ -1,9 +1,15 @@
 library(cronR)
-cron_add("testing!", id="abc")
 cron_ls()
-cron_add("testing2!", id="123")
+cron_add("testing!", id="abc", tags=c("test1", "test2"))
 cron_ls()
+cron_add("testing2!", id="123", tags=c("test2", "test3"))
+cron_ls(tag="test0")
+
+cron_save(file="test.cron", overwrite=TRUE)
+cron_load(file="test.cron")
+
 cron_rm("abc")
 cron_ls()
 cron_rm("123")
 cron_ls()
+cron_clear(FALSE)
