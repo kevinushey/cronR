@@ -1,0 +1,4 @@
+Name: Cron job scheduler
+Description: Easy scheduling of R scripts with cron
+Binding: cron_rstudioaddin
+Interactive: true
