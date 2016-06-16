@@ -15,7 +15,7 @@ cron_load <- function(file, user="") {
       if (length(crontab$cronR) != 1) "s" else "", 
       "loaded.")
   } else {
-    n_other_jobs <- length(grep("^[# ]", inver=TRUE,
+    n_other_jobs <- length(grep("^[# ]", invert=TRUE,
       unlist(strsplit(crontab$other, "\n", fixed=TRUE))
     ))
     message("Crontab with ", length(crontab$cronR), " cronR job",
