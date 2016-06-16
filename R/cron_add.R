@@ -38,7 +38,6 @@
 ##' @param dry_run Boolean; if \code{TRUE} we do not submit the cron job; 
 ##'   instead we return the parsed text that would be submitted as a cron job.
 ##' @param user The user whose cron jobs we wish to examine.
-##' @importFrom digest digest
 ##' @export
 cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week, months,
   id, tags="", description="", dry_run=FALSE, user="") {
@@ -122,23 +121,25 @@ cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week
   
   if (!missing(days_of_week)) {
     days_of_week <- ordinal_swap(days_of_week, adj=-1)
-    job[["day_of_week"]] <- paste( unique( sort(sapply(days_of_week, parse_day_of_week)), collapse=",") )
+    job[["day_of_week"]] <- paste( unique( sort(sapply(days_of_week, parse_day_of_week))), collapse=",")
   }
   
   if (!missing(days_of_month)) {
     days_of_month <- ordinal_swap(days_of_month)
-    job[["day_of_month"]] <- paste( unique( sort(sapply(days_of_month, parse_day_of_month)), collapse=",") )
+    job[["day_of_month"]] <- paste( unique( sort(sapply(days_of_month, parse_day_of_month))), collapse=",")
   }
   
   if (!missing(months)) {
     months <- ordinal_swap(months)
-    job[["month"]] <- paste( unique( sort(sapply(months, parse_month)), collapse=",") )
+    job[["month"]] <- paste( unique( sort(sapply(months, parse_month))), collapse=",")
   }
   
   if (!missing(at)) {
     at_list <- lapply(at, parse_time)
     job[["min"]] <- paste( sapply(at_list, "[[", "minutes"), collapse="," )
-    job[["hour"]] <- paste( sapply(at_list, "[[", "hours"), collapse="," )
+    if(frequency != "hourly"){
+      job[["hour"]] <- paste( sapply(at_list, "[[", "hours"), collapse="," )  
+    }
   }
   
   job[["command"]] <- command
