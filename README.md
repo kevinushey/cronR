@@ -25,7 +25,7 @@ When the task has run which is scheduled with the RStudio addin, you can look at
 RStudio add-in
 -----------
 
-The package contains also an RStudio add-in. If you install the package and use RStudio version 0.99.893 or later you can just click to schedule a task. Just click Addins > Cron job scheduler.
+The package contains also an RStudio add-in. If you install the package and use RStudio version 0.99.893 or later you can just click to schedule a task. Just click Addins > Schedule R scripts on Linux/Unix.
 
 ![taskscheduleR](inst/img/cronR-rstudioaddin.png) 
 
