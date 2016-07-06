@@ -21,48 +21,56 @@ cron_rstudioaddin <- function(RscriptRepository) {
   
   requireNamespace("shiny")
   requireNamespace("miniUI")
+  requireNamespace("shinyFiles")
   current_repo <- file.path(system.file("extdata", package="cronR"), "RscriptRepository.rds")
   if(missing(RscriptRepository)){
     if(file.exists(current_repo)){
       RscriptRepository <- readRDS(file = current_repo)
     }else{
       RscriptRepository <- system.file("extdata", package="cronR")
+      RscriptRepository <- getwd()
       saveRDS(RscriptRepository, file = current_repo)
     }
   }
-
+  
   check <- NULL
   
   ui <- miniUI::miniPage(
     # Shiny fileinput resethandler
-    shiny::tags$script('
-                       Shiny.addCustomMessageHandler("resetFileInputHandler", function(x) {
-                       var id = "#" + x + "_progress";
-                       var idBar = id + " .bar";
-                       $(id).css("visibility", "hidden");
-                       $(idBar).css("width", "0%");
-                       });
-                       '),
+    # shiny::tags$script('
+    #                    Shiny.addCustomMessageHandler("resetFileInputHandler", function(x) {
+    #                    var id = "#" + x + "_progress";
+    #                    var idBar = id + " .bar";
+    #                    $(id).css("visibility", "hidden");
+    #                    $(idBar).css("width", "0%");
+    #                    });
+    #                    '),
     
     miniUI::gadgetTitleBar("Use cron to schedule your R script"),
     
     miniUI::miniTabstripPanel(
       miniUI::miniTabPanel(title = 'Upload and create new jobs', icon = shiny::icon("cloud-upload"),
                            miniUI::miniContentPanel(
-                             shiny::uiOutput('fileSelect'),
+                             #shiny::uiOutput('fileSelect'),
+                             shiny::h4("Choose your Rscript"),
+                             shinyFiles::shinyFilesButton('fileSelect', label='Select file', title='Choose your Rscript', multiple=FALSE),
+                             shiny::br(),
+                             shiny::br(),
                              shiny::fillRow(flex = c(3, 3),
-                             shiny::column(6,
-                                    shiny::dateInput('date', label = "Launch date:", startview = "month", weekstart = 1, min = Sys.Date()),
-                                    shiny::textInput('hour', label = "Launch hour:", value = format(Sys.time() + 122, "%H:%M")),
-                                    shiny::radioButtons('task', label = "Schedule:", choices = c('ONCE', 'EVERY MINUTE', 'EVERY HOUR', 'EVERY DAY', 'EVERY WEEK', 'EVERY MONTH'), selected = "ONCE")
-                             ),
-                             shiny::column(6,
-                                    shiny::textInput('jobdescription', label = "Job description", value = "I execute things"),
-                                    shiny::textInput('jobtags', label = "Job tags", value = ""),
-                                    shiny::textInput('rscript_args', label = "Additional arguments to Rscript", value = ""),
-                                    shiny::textInput('jobid', label = "Job identifier", value = sprintf("job_%s", digest(runif(1)))),
-                                    shiny::textInput('rscript_repository', label = "Rscript repository path: launch & log location", value = RscriptRepository)
-                                    ))
+                                            shiny::column(6,
+                                                          shiny::div(class = "control-label", shiny::strong("Selected Rscript")),
+                                                          shiny::verbatimTextOutput('currentfileselected'),
+                                                          shiny::dateInput('date', label = "Launch date:", startview = "month", weekstart = 1, min = Sys.Date()),
+                                                          shiny::textInput('hour', label = "Launch hour:", value = format(Sys.time() + 122, "%H:%M")),
+                                                          shiny::radioButtons('task', label = "Schedule:", choices = c('ONCE', 'EVERY MINUTE', 'EVERY HOUR', 'EVERY DAY', 'EVERY WEEK', 'EVERY MONTH'), selected = "ONCE")
+                                            ),
+                                            shiny::column(6,
+                                                          shiny::textInput('jobdescription', label = "Job description", value = "I execute things"),
+                                                          shiny::textInput('jobtags', label = "Job tags", value = ""),
+                                                          shiny::textInput('rscript_args', label = "Additional arguments to Rscript", value = ""),
+                                                          shiny::textInput('jobid', label = "Job identifier", value = sprintf("job_%s", digest(runif(1)))),
+                                                          shiny::textInput('rscript_repository', label = "Rscript repository path: launch & log location", value = RscriptRepository)
+                                            ))
                            ),
                            miniUI::miniButtonBlock(border = "bottom",
                                                    shiny::actionButton('create', "Create job", icon = shiny::icon("play-circle"))
@@ -71,47 +79,72 @@ cron_rstudioaddin <- function(RscriptRepository) {
       miniUI::miniTabPanel(title = 'Manage existing jobs', icon = shiny::icon("table"),
                            miniUI::miniContentPanel(
                              shiny::fillRow(flex = c(3, 3),
-                             shiny::column(6,
-                                           shiny::h4("Existing crontab"),
-                                           shiny::actionButton('showcrontab', "Show current crontab schedule", icon = shiny::icon("calendar")),
-                                           shiny::br(),
-                                           shiny::br(),
-                                           shiny::h4("Show/Delete 1 specific job"),
-                                           shiny::uiOutput("getFiles"),
-                                           shiny::actionButton('showjob', "Show job", icon = shiny::icon("clock-o")),
-                                           shiny::actionButton('deletejob', "Delete job", icon = shiny::icon("remove"))
-                             ),
-                             shiny::column(6,
-                                           shiny::h4("Save crontab"),
-                                           shiny::textInput('savecrontabpath', label = "Save current crontab schedule to", value = file.path(Sys.getenv("HOME"), "my_schedule.cron")),
-                                           shiny::actionButton('savecrontab', "Save", icon = shiny::icon("save")),
-                                           shiny::br(),
-                                           shiny::br(),
-                                           shiny::h4("Load crontab"),
-                                           shiny::uiOutput('cronload'),
-                                           shiny::actionButton('loadcrontab', "Load", icon = shiny::icon("load"))
-                             ))
+                                            shiny::column(6,
+                                                          shiny::h4("Existing crontab"),
+                                                          shiny::actionButton('showcrontab', "Show current crontab schedule", icon = shiny::icon("calendar")),
+                                                          shiny::br(),
+                                                          shiny::br(),
+                                                          shiny::h4("Show/Delete 1 specific job"),
+                                                          shiny::uiOutput("getFiles"),
+                                                          shiny::actionButton('showjob', "Show job", icon = shiny::icon("clock-o")),
+                                                          shiny::actionButton('deletejob', "Delete job", icon = shiny::icon("remove"))
+                                            ),
+                                            shiny::column(6,
+                                                          shiny::h4("Save crontab"),
+                                                          shiny::textInput('savecrontabpath', label = "Save current crontab schedule to", value = file.path(Sys.getenv("HOME"), "my_schedule.cron")),
+                                                          shiny::actionButton('savecrontab', "Save", icon = shiny::icon("save")),
+                                                          shiny::br(),
+                                                          shiny::br(),
+                                                          shiny::h4("Load crontab"),
+                                                          #shiny::uiOutput('cronload'),
+                                                          shinyFiles::shinyFilesButton('crontabSelect', label='Select crontab schedule', title='Select crontab schedule', multiple=FALSE),
+                                                          #shiny::div(class = "control-label", strong("Selected crontab")),
+                                                          shiny::br(),
+                                                          shiny::br(),
+                                                          shiny::actionButton('loadcrontab', "Load selected schedule", icon = shiny::icon("load")),
+                                                          shiny::br(),
+                                                          shiny::br(),
+                                                          shiny::verbatimTextOutput('currentcrontabselected')
+                                            ))
                            ),
                            miniUI::miniButtonBlock(border = "bottom",
                                                    shiny::actionButton('deletecrontab', "Completely clear current crontab schedule", icon = shiny::icon("delete"))
                            )
       )
     )
-    )
+  )
   
   # Server code for the gadget.
   server <- function(input, output, session) {
-    
+    volumes <- c('Current working dir' = getwd(), 'HOME' = Sys.getenv('HOME'), 'R Installation' = R.home(), 'Root' = "/")
+    getSelectedFile <- function(inputui, default = "No R script selected yet"){
+      f <- shinyFiles::parseFilePaths(volumes, inputui)$datapath
+      f <- as.character(f)
+      if(length(f) == 0){
+        return(default)
+      }else{
+        if(length(grep(" ", f, value=TRUE))){
+          warning(sprintf("Make sure the file you want to schedule (%s) does not contain spaces", f))
+        }
+      }
+      f
+    }
     # Ui element for fileinput
-    output$fileSelect <- shiny::renderUI({
-      shiny::fileInput(inputId = 'file', 'Choose your Rscript',
-                accept = c("R-bestand"),
-                multiple = TRUE)
-    })
-    output$cronload <- shiny::renderUI({
-      shiny::fileInput(inputId = 'crontabschedule', 'Load an existing crontab schedule & overwrite current schedule',
-                       multiple = FALSE)
-    })
+    shinyFiles::shinyFileChoose(input, id = 'fileSelect', roots = volumes, session = session)
+    output$fileSelect <- shiny::renderUI({shinyFiles::parseFilePaths(volumes, input$fileSelect)})
+    output$currentfileselected <- shiny::renderText({getSelectedFile(inputui = input$fileSelect)})
+    #output$fileSelect <- shiny::renderUI({
+    #  shiny::fileInput(inputId = 'file', 'Choose your Rscript',
+    #            accept = c("R-bestand"),
+    #            multiple = TRUE)
+    #})
+    shinyFiles::shinyFileChoose(input, id = 'crontabSelect', roots = volumes, session = session)
+    output$crontabSelect <- shiny::renderUI({shinyFiles::parseFilePaths(volumes, input$crontabSelect)})
+    output$currentcrontabselected <- shiny::renderText({basename(getSelectedFile(inputui = input$crontabSelect, default = ""))})
+    # output$cronload <- shiny::renderUI({
+    #   shiny::fileInput(inputId = 'crontabschedule', 'Load an existing crontab schedule & overwrite current schedule',
+    #                    multiple = FALSE)
+    # })
     
     # When path to Rscript repository has been changed
     shiny::observeEvent(input$rscript_repository, {
@@ -122,13 +155,13 @@ cron_rstudioaddin <- function(RscriptRepository) {
         message(sprintf("RscriptRepository %s does not exist, make sure this is an existing directory without spaces", RscriptRepository))
       }
     })
-
+    
     ###########################
     # CREATE / OVERWRITE
     ###########################
     shiny::observeEvent(input$create, {
       shiny::req(input$task)
-      shiny::req(input$file)
+      #shiny::req(input$file)
       
       if(input$task == "EVERY MONTH" ){
         days <- as.integer(format(input$date, "%d"))
@@ -153,10 +186,13 @@ cron_rstudioaddin <- function(RscriptRepository) {
       if(length(grep(" ", RscriptRepository)) > 0){
         stop(sprintf("Make sure the RscriptRepository does not contain spaces, change argument %s to another location on your drive which contains no spaces", RscriptRepository))
       }
-      myscript <- paste0(RscriptRepository, "/", input$file$name)
-      done <-  file.copy(input$file$datapath, myscript, overwrite = TRUE)
-      if(!done){
-        stop(sprintf('Copying file %s to %s failed. Do you have access rights to %s?', file.path(input$file$datapath, input$file$name), myscript, dirname(myscript)))
+      runme <- getSelectedFile(inputui = input$fileSelect)
+      myscript <- paste0(RscriptRepository, "/", basename(runme))
+      if(runme != myscript){
+        done <-  file.copy(runme, myscript, overwrite = TRUE)
+        if(!done){
+          stop(sprintf('Copying file %s to %s failed. Do you have access rights to %s?', file.path(runme, input$file$name), myscript, dirname(myscript)))
+        }  
       }
       ##
       ## Make schedule task
@@ -176,7 +212,7 @@ cron_rstudioaddin <- function(RscriptRepository) {
         message(sprintf("This is not a cron schedule but will launch: %s", sprintf('nohup %s &', cmd)))
         system(sprintf('nohup %s &', cmd))
       }
-
+      
       # Reset ui inputs
       shiny::updateDateInput(session, inputId = 'date', value = Sys.Date())
       shiny::updateTextInput(session, inputId = "hour", value = format(Sys.time() + 122, "%H:%M"))
@@ -185,11 +221,12 @@ cron_rstudioaddin <- function(RscriptRepository) {
       shiny::updateTextInput(session, inputId = "jobdescription", value = "I execute things")
       shiny::updateTextInput(session, inputId = "jobtags", value = "")
       shiny::updateTextInput(session, inputId = "rscript_args", value = "")
-      output$fileSelect <- shiny::renderUI({
-        shiny::fileInput(inputId = 'file', 'Choose your Rscript',
-                  accept = c("R-bestand"),
-                  multiple = TRUE)
-      })
+      # output$fileSelect <- shiny::renderUI({
+      #   shiny::fileInput(inputId = 'file', 'Choose your Rscript',
+      #                    accept = c("R-bestand"),
+      #                    multiple = TRUE)
+      # })
+      #output$currentfileselected <- shiny::renderText({""})
       shiny::updateSelectInput(session, inputId="getFiles", choices = sapply(cron_current()$cronR, FUN=function(x) x$id))
     })
     
@@ -212,12 +249,16 @@ cron_rstudioaddin <- function(RscriptRepository) {
     # Save/Load/Delete
     ###########################
     shiny::observeEvent(input$savecrontab, {
-      if(cron_njobs() > 0){
-        cron_save(file = input$savecrontabpath, overwrite = TRUE)  
-      }
+      message(input$savecrontabpath)
+      cron_save(file = input$savecrontabpath, overwrite = TRUE)
     })
     shiny::observeEvent(input$loadcrontab, {
-      cron_load(file = input$crontabschedule$datapath)
+      #cron_load(file = input$crontabschedule$datapath)
+      f <- getSelectedFile(inputui = input$crontabSelect, default = "")
+      message(f)
+      if(f != ""){
+        cron_load(file = f)
+      }
       output$getFiles <- shiny::renderUI({
         shiny::selectInput(inputId = 'getFiles', "Select job", choices = sapply(cron_current()$cronR, FUN=function(x) x$id))
       })
@@ -250,8 +291,8 @@ cron_rstudioaddin <- function(RscriptRepository) {
   }
   
   # Use a modal dialog as a viewr.
-  #viewer <- shiny::dialogViewer("Cron job scheduler", width = 700, height = 600)
-  viewer <- shiny::paneViewer()
+  viewer <- shiny::dialogViewer("Cron job scheduler", width = 700, height = 800)
+  #viewer <- shiny::paneViewer()
   shiny::runGadget(ui, server, viewer = viewer)
 }
 
