@@ -18,10 +18,10 @@ cron_rstudioaddin <- function(RscriptRepository) {
     }
     x
   }
-  
-  requireNamespace("shiny")
-  requireNamespace("miniUI")
-  requireNamespace("shinyFiles")
+  require("cronR")
+  require("shiny")
+  require("miniUI")
+  require("shinyFiles")
   current_repo <- file.path(system.file("extdata", package="cronR"), "RscriptRepository.rds")
   if(missing(RscriptRepository)){
     if(file.exists(current_repo)){
