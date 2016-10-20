@@ -37,10 +37,11 @@ Install the latest version from github:
 devtools::install_github("bnosac/cronR")
 ```
 
-If you want the RStudio add-in to work, also install miniUI and shiny
+If you want the RStudio add-in to work, also install miniUI, shiny and shinyFiles
 ```
 install.packages('miniUI')
 install.packages('shiny')
+install.packages('shinyFiles')
 ```
 
 Warning
