@@ -198,7 +198,7 @@ cron_rstudioaddin <- function(RscriptRepository) {
       ## Make schedule task
       ##
       cmd <- sprintf("Rscript %s %s >> %s.log 2>&1", myscript, rscript_args, tools::file_path_sans_ext(myscript))
-      cmd <- sprintf('"%s" %s %s >> %s.log 2>&1', file.path(Sys.getenv("R_HOME"), "bin", "Rscript"), myscript, rscript_args, tools::file_path_sans_ext(myscript))
+      cmd <- sprintf('%s %s %s >> %s.log 2>&1', file.path(Sys.getenv("R_HOME"), "bin", "Rscript"), myscript, rscript_args, tools::file_path_sans_ext(myscript))
       if(frequency %in% c('minutely')){
         cron_add(command = cmd, frequency = frequency, id = input$jobid, tags = input$jobtags, description = input$jobdescription)  
       }else if(frequency %in% c('hourly')){
