@@ -1,11 +1,11 @@
-##' List the contents of a crontab
-##' 
-##' We only list the contents that are handeld by \code{cronR}.
-##' 
-##' @param id Return cron jobs with a certain \code{id}.
-##' @param tags Return cron jobs with a certain (set of) tags.
-##' @param user The user's crontab to display
-##' @export
+#' List the contents of a crontab
+#' 
+#' We only list the contents that are handeld by \code{cronR}.
+#' 
+#' @param id Return cron jobs with a certain \code{id}.
+#' @param tags Return cron jobs with a certain (set of) tags.
+#' @param user The user's crontab to display
+#' @export
 cron_ls <- function(id, tags, user="") {
   
   crontab <- try(parse_crontab(user=user), silent=TRUE)
