@@ -11,7 +11,15 @@ cron_clear(ask = TRUE, user = "")
 
 \item{user}{The user whose crontab we are clearing.}
 }
-\description{
-Clear all cron jobs
+\examples{
+f <- system.file(package = "cronR", "extdata", "helloworld.R")
+cmd <- cron_rscript(f)
+cron_add(command = cmd, frequency = 'minutely', id = 'test1', description = 'My process 1')
+cron_add(command = cmd, frequency = 'daily', at="7AM", id = 'test2', description = 'My process 2')
+cron_njobs()
+
+cron_ls()
+cron_clear(ask=FALSE)
+cron_ls()
 }
 

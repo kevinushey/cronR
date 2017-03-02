@@ -19,4 +19,14 @@ instead we return the parsed text that would be submitted as a cron job.}
 \description{
 Use this command to remove a cron job added by \code{cron_add}.
 }
+\examples{
+f <- system.file(package = "cronR", "extdata", "helloworld.R")
+cmd <- cron_rscript(f)
+cron_add(command = cmd, frequency = 'minutely', id = 'test1', description = 'My process 1')
+cron_njobs()
+cron_ls()
+cron_rm(id = "test1")
+cron_njobs()
+cron_ls()
+}
 
