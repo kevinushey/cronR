@@ -18,10 +18,10 @@ cron_rstudioaddin <- function(RscriptRepository) {
     }
     x
   }
-  require("cronR")
-  require("shiny")
-  require("miniUI")
-  require("shinyFiles")
+  requireNamespace("cronR")
+  requireNamespace("shiny")
+  requireNamespace("miniUI")
+  requireNamespace("shinyFiles")
   current_repo <- file.path(system.file("extdata", package="cronR"), "RscriptRepository.rds")
   if(missing(RscriptRepository)){
     if(file.exists(current_repo)){
@@ -124,7 +124,7 @@ cron_rstudioaddin <- function(RscriptRepository) {
         return(default)
       }else{
         if(length(grep(" ", f, value=TRUE))){
-          warning(sprintf("Make sure the file you want to schedule (%s) does not contain spaces", f))
+          warning(sprintf("It is advised that the file you want to schedule (%s) does not contain spaces", f))
         }
       }
       f
@@ -184,7 +184,7 @@ cron_rstudioaddin <- function(RscriptRepository) {
       ## Copy the uploaded file from the webapp to the main folder to store the scheduled rscripts.
       ##
       if(length(grep(" ", RscriptRepository)) > 0){
-        stop(sprintf("Make sure the RscriptRepository does not contain spaces, change argument %s to another location on your drive which contains no spaces", RscriptRepository))
+        warning(sprintf("It is advised that the RscriptRepository does not contain spaces, change argument %s to another location on your drive which contains no spaces", RscriptRepository))
       }
       runme <- getSelectedFile(inputui = input$fileSelect)
       myscript <- paste0(RscriptRepository, "/", basename(runme))
@@ -198,7 +198,7 @@ cron_rstudioaddin <- function(RscriptRepository) {
       ## Make schedule task
       ##
       cmd <- sprintf("Rscript %s %s >> %s.log 2>&1", myscript, rscript_args, tools::file_path_sans_ext(myscript))
-      cmd <- sprintf('%s %s %s >> %s.log 2>&1', file.path(Sys.getenv("R_HOME"), "bin", "Rscript"), myscript, rscript_args, tools::file_path_sans_ext(myscript))
+      cmd <- sprintf('%s %s %s >> %s 2>&1', file.path(Sys.getenv("R_HOME"), "bin", "Rscript"), shQuote(myscript), rscript_args, shQuote(sprintf("%s.log", tools::file_path_sans_ext(myscript))))
       if(frequency %in% c('minutely')){
         cron_add(command = cmd, frequency = frequency, id = input$jobid, tags = input$jobtags, description = input$jobdescription)  
       }else if(frequency %in% c('hourly')){
