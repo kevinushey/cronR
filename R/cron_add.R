@@ -1,6 +1,6 @@
-#' Make a simple cron job
+#' @title Make a simple cron job
 #' 
-#' Generate a cron job, and pass it to crontab.
+#' @description Generate a cron job, and pass it to crontab.
 #' 
 #' The goal is to be able to translate simple English statements of intent
 #' to the actual \code{cron} statement that could execute that intent. For example,
@@ -39,6 +39,11 @@
 #'   instead we return the parsed text that would be submitted as a cron job.
 #' @param user The user whose cron jobs we wish to examine.
 #' @export
+#' @examples 
+#' f <- system.file(package = "cronR", "extdata", "helloworld.R")
+#' cmd <- cron_rscript(f)
+#' cron_add(command = cmd, frequency = 'minutely', id = 'test1', description = 'My process 1')
+#' cron_add(command = cmd, frequency = 'daily', at="7AM", id = 'test2', description = 'My process 2')
 cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week, months,
   id, tags="", description="", dry_run=FALSE, user="") {
   

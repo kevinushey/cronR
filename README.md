@@ -32,6 +32,13 @@ The package contains also an RStudio add-in. If you install the package and use 
 Install
 -----------
 
+Make sure the cron daemon is running. On Debian this is done as follows.
+```
+sudo apt-get update
+sudo apt-get install -y cron
+sudo cron start
+```
+
 Install the latest version from github:
 ```
 devtools::install_github("bnosac/cronR")
@@ -43,6 +50,9 @@ install.packages('miniUI')
 install.packages('shiny')
 install.packages('shinyFiles')
 ```
+
+Now have a look at `?cron_add` or start the RStudio addin
+
 
 Warning
 -----------

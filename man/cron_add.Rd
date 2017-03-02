@@ -46,8 +46,7 @@ instead we return the parsed text that would be submitted as a cron job.}
 }
 \description{
 Generate a cron job, and pass it to crontab.
-}
-\details{
+
 The goal is to be able to translate simple English statements of intent
 to the actual \code{cron} statement that could execute that intent. For example,
 
@@ -62,5 +61,11 @@ Another example, \emph{"I want to run a job on the 15th of every month."}
 is
 
 \code{cron_add(<command>, "monthly", days_of_month="15th")}
+}
+\examples{
+f <- system.file(package = "cronR", "extdata", "helloworld.R")
+cmd <- cron_rscript(f)
+cron_add(command = cmd, frequency = 'minutely', id = 'test1', description = 'My process 1')
+cron_add(command = cmd, frequency = 'daily', at="7AM", id = 'test2', description = 'My process 2')
 }
 
