@@ -1,5 +1,5 @@
 #' @title List the number of rCron cron jobs
-#' 
+#' @description List the number of rCron cron jobs
 #' @param user The user whose cron jobs we wish to examine.
 #' @export
 #' @examples 

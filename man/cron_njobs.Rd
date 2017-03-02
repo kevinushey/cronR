@@ -9,6 +9,9 @@ cron_njobs(user = "")
 \arguments{
 \item{user}{The user whose cron jobs we wish to examine.}
 }
+\description{
+List the number of rCron cron jobs
+}
 \examples{
 cron_njobs()
 }

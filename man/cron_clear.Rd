@@ -11,6 +11,9 @@ cron_clear(ask = TRUE, user = "")
 
 \item{user}{The user whose crontab we are clearing.}
 }
+\description{
+Clear all cron jobs
+}
 \examples{
 f <- system.file(package = "cronR", "extdata", "helloworld.R")
 cmd <- cron_rscript(f)

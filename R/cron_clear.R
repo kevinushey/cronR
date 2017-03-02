@@ -1,5 +1,5 @@
 #' @title Clear all cron jobs
-#' 
+#' @description Clear all cron jobs
 #' @param ask Boolean; ask before removal?
 #' @param user The user whose crontab we are clearing.
 #' @export
