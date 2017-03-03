@@ -1,5 +1,5 @@
-#' Load a crontab from file
-#' 
+#' @title Load a crontab from file
+#' @description Load a crontab from file
 #' @param file The file location of a crontab.
 #' @param user The user for whom we will be loading a crontab.
 #' @export

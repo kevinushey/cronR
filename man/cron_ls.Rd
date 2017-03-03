@@ -16,4 +16,7 @@ cron_ls(id, tags, user = "")
 \description{
 We only list the contents that are handeld by \code{cronR}.
 }
+\examples{
+cron_ls()
+}
 

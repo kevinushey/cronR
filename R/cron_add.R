@@ -40,6 +40,7 @@
 #' @param user The user whose cron jobs we wish to examine.
 #' @export
 #' @examples 
+#' \dontrun{
 #' f <- system.file(package = "cronR", "extdata", "helloworld.R")
 #' cmd <- cron_rscript(f)
 #' cmd
@@ -66,6 +67,7 @@
 #'   days_of_month = 'first', days_of_week = '*')
 #' cron_ls()
 #' cron_clear(ask=FALSE)
+#' }
 cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week, months,
   id, tags="", description="", dry_run=FALSE, user="") {
   

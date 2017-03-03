@@ -4,6 +4,7 @@
 #' @param user The user whose crontab we are clearing.
 #' @export
 #' @examples
+#' \dontrun{
 #' f <- system.file(package = "cronR", "extdata", "helloworld.R")
 #' cmd <- cron_rscript(f)
 #' cron_add(command = cmd, frequency = 'minutely', id = 'test1', description = 'My process 1')
@@ -13,6 +14,7 @@
 #' cron_ls()
 #' cron_clear(ask=FALSE)
 #' cron_ls()
+#' }
 cron_clear <- function(ask=TRUE, user="") {
   
   if (user == "")

@@ -63,6 +63,7 @@ is
 \code{cron_add(<command>, "monthly", days_of_month="15th")}
 }
 \examples{
+\dontrun{
 f <- system.file(package = "cronR", "extdata", "helloworld.R")
 cmd <- cron_rscript(f)
 cmd
@@ -89,5 +90,6 @@ cron_add(cmd, frequency = 'monthly', id = 'job8', at = '10:30',
   days_of_month = 'first', days_of_week = '*')
 cron_ls()
 cron_clear(ask=FALSE)
+}
 }
 

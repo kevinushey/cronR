@@ -6,6 +6,8 @@
 #' @param tags Return cron jobs with a certain (set of) tags.
 #' @param user The user's crontab to display
 #' @export
+#' @examples 
+#' cron_ls()
 cron_ls <- function(id, tags, user="") {
   
   crontab <- try(parse_crontab(user=user), silent=TRUE)

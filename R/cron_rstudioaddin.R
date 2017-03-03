@@ -6,9 +6,7 @@
 #' @return the return of \code{\link[shiny]{runGadget}}
 #' @export
 #' @examples 
-#' \dontrun{
 #' cron_rstudioaddin()
-#' }
 cron_rstudioaddin <- function(RscriptRepository) {
   
   cron_current <- function(){

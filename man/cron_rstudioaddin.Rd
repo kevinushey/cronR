@@ -16,8 +16,6 @@ the return of \code{\link[shiny]{runGadget}}
 Launch an RStudio addin which allows to schedule an Rscript interactively.
 }
 \examples{
-\dontrun{
 cron_rstudioaddin()
-}
 }
 

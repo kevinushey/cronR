@@ -8,11 +8,13 @@
 #' @export
 #' @seealso \code{\link{file.copy}}
 #' @examples 
+#' \dontrun{
 #' cron_add(command = cron_rscript(system.file(package = "cronR", "extdata", "helloworld.R")), 
 #'   frequency = 'minutely', id = 'test1', description = 'My process 1')
 #' cron_save(file="crontab_backup", overwrite=TRUE)
 #' cron_clear()
 #' cron_load(file="crontab_backup")
+#' }
 cron_save <- function(file, overwrite=FALSE, user="") {
   crontab <- parse_crontab(user=user)
   tempfile <- tempfile()

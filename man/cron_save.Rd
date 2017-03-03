@@ -19,11 +19,13 @@ if it already exists?}
 Save the current crontab
 }
 \examples{
+\dontrun{
 cron_add(command = cron_rscript(system.file(package = "cronR", "extdata", "helloworld.R")), 
   frequency = 'minutely', id = 'test1', description = 'My process 1')
 cron_save(file="crontab_backup", overwrite=TRUE)
 cron_clear()
 cron_load(file="crontab_backup")
+}
 }
 \seealso{
 \code{\link{file.copy}}
