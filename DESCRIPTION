@@ -1,14 +1,14 @@
 Package: cronR
 Type: Package
-Title: Schedule R Scripts and Processes with the "cron" Job Scheduler
+Title: Schedule R Scripts and Processes with the 'cron' Job Scheduler
 Version: 0.3.0
 Date: 2017-03-03
 Author: c(person("Jan", "Wijffels", role = c("aut", "cre", "cph"), email =
     "jwijffels@bnosac.be"), person("BNOSAC", role = "cph"), person("Kevin", "Ushey",
     role = c("aut", "cre", "cph"), email = "kevinushey@gmail.com"))
 Maintainer: Jan Wijffels <jwijffels@bnosac.be>
-Description: Create, edit, and remove "cron" jobs on your unix-alike system. The package provides a set of easy-to-use wrappers
-    to "crontab". It also provides an RStudio add-in to easily launch and schedule your scripts.
+Description: Create, edit, and remove 'cron' jobs on your unix-alike system. The package provides a set of easy-to-use wrappers
+    to 'crontab'. It also provides an RStudio add-in to easily launch and schedule your scripts.
 URL: https://github.com/bnosac/cronR
 Imports:
     digest
