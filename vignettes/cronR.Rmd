@@ -1,0 +1,92 @@
+---
+title: "cronR"
+author: "Jan Wijffels"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{cronR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(comment = "#>", collapse = TRUE, eval = FALSE)
+```
+
+![cronR](cronR-logo.png) 
+
+Schedule R scripts/processes with the cron scheduler. This allows R users working on Unix/Linux to automate R processes on specific timepoints from R itself.
+Mark that if you are looking for a Windows scheduler, you might be interested in the R package taskscheduleR available at
+https://github.com/bnosac/taskscheduleR
+
+
+Basic usage
+-----------
+
+This R package allows to 
+
+* Get the list of scheduled jobs
+* Remove scheduled jobs
+* Add a job
+
+  + A job is basically a script with R code which is run through Rscript
+  + You can schedule tasks 'ONCE', 'EVERY MINUTE', 'EVERY HOUR', 'EVERY DAY', 'EVERY WEEK', 'EVERY MONTH' or any complex schedule
+  + The task log contains the stdout & stderr of the Rscript which was run on that timepoint. This log can be found at the same folder as the R script
+
+When the task has run which is scheduled with the RStudio addin, you can look at the log which contains everything from stdout and stderr. The log file is located at the directory where the R script is located.
+
+
+Get started
+-----------
+
+First make sure cron is installed and the cron daemon is running. On Debian this is done as follows.
+
+```{sh}
+sudo apt-get update
+sudo apt-get install -y cron
+sudo cron start
+```
+
+Next, we can start on scheduling jobs
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(comment = "#>", collapse = TRUE, eval = FALSE)
+```
+
+```{r}
+library(cronR)
+myscript <- system.file("extdata", "helloworld.R", package = "cronR")
+
+f <- system.file(package = "cronR", "extdata", "helloworld.R")
+cmd <- cron_rscript(f)
+cron_add(command = cmd, frequency = 'minutely', id = 'test1', description = 'My process 1')
+cron_add(command = cmd, frequency = 'daily', at="7AM", id = 'test2', description = 'My process 2')
+cron_njobs()
+
+cron_ls()
+cron_clear(ask=FALSE)
+cron_ls()
+```
+
+When the task has run, you can look at the log which contains everything from stdout and stderr. The log file is located at the directory where the R script is located.
+
+```{r}
+## log file is at the place where the helloworld.R script was located
+system.file("extdata", "helloworld.log", package = "cronR")
+```
+
+
+RStudio addin
+-----------
+
+If you work with RStudio as editor, you can also just use the RStudio addin. In recent versions of RStudio (0.99.893 or later), select Addins and next select 'Schedule R scripts on Linux/Unix'.
+This will allow you to select a script to be scheduled at your specified timepoints. The script will be copied to the Rscript repo folder and will be launched from there each time.
+
+![cronR](cronR-rstudioaddin.png) 
+
+If you want the RStudio add-in to work, also install miniUI, shiny and shinyFiles
+```
+install.packages('miniUI')
+install.packages('shiny')
+install.packages('shinyFiles')
+```

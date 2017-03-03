@@ -10,13 +10,15 @@ Maintainer: Jan Wijffels <jwijffels@bnosac.be>
 Description: This package allows you to create, edit, and remove cron
     jobs on your unix-alike system. It provides a set of easy-to-use wrappers
     to crontab. It also provides an RStudio add-in to easily launch and schedule your scripts.
+URL: https://github.com/bnosac/cronR
 Imports:
     digest
 Suggests:
     knitr,
     miniUI,
     shiny (>= 0.11),
-    shinyFiles (>= 0.6.0)
+    shinyFiles (>= 0.6.0),
+    testthat
 License: MIT + file LICENSE
 VignetteBuilder: knitr
 SystemRequirements: cron

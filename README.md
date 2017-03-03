@@ -1,7 +1,7 @@
 cronR
 =========
 
-![cronR](inst/img/cronR-logo.png) 
+![cronR](vignettes/cronR-logo.png) 
 
 Schedule R scripts/processes with the cron scheduler. This allows R users working on Unix/Linux to automate R processes on specific timepoints from R itself.
 Mark that if you are looking for a Windows scheduler, you might be interested in the R package taskscheduleR available at
@@ -12,6 +12,7 @@ Basic usage
 -----------
 
 This R package allows to 
+
 * Get the list of scheduled jobs
 * Remove scheduled jobs
 * Add a job
@@ -27,7 +28,7 @@ RStudio add-in
 
 The package contains also an RStudio add-in. If you install the package and use RStudio version 0.99.893 or later you can just click to schedule a task. Just click Addins > Schedule R scripts on Linux/Unix.
 
-![taskscheduleR](inst/img/cronR-rstudioaddin.png) 
+![cronR](vignettes/cronR-rstudioaddin.png) 
 
 Install
 -----------
