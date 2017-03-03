@@ -67,6 +67,8 @@ cron_ls()
 cron_clear(ask=FALSE)
 cron_ls()
 
+cmd <- cron_rscript(f, rscript_args = c("productx", "arg2", "123"))
+cmd
 cron_add(cmd, frequency = 'minutely', id = 'job1', description = 'Customers')
 cron_add(cmd, frequency = 'hourly', id = 'job2', description = 'Weather')
 cron_add(cmd, frequency = 'hourly', id = 'job3', days_of_week = c(1, 2))
