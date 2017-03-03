@@ -1,18 +1,6 @@
 parse_cron_jobs <- function(jobs) {
   lapply(jobs, function(job) {
     
-    ## From wikipedia; 
-    ## http://en.wikipedia.org/wiki/Cron#Predefined_scheduling_definitions
-    
-    # * * * * *  command to execute
-    # ┬ ┬ ┬ ┬ ┬
-    # │ │ │ │ │
-    # │ │ │ │ │
-    # │ │ │ │ └───── day of week (0 - 6) (0 to 6 are Sunday to Saturday, or use names)
-    # │ │ │ └────────── month (1 - 12)
-    # │ │ └─────────────── day of month (1 - 31)
-    # │ └──────────────────── hour (0 - 23)
-    # └───────────────────────── min (0 - 59)
     
     split_string <- "__CRON_JOB_SPLIT__"
     pattern <- "(.*?)[[:space:]]+(.*?)[[:space:]]+(.*?)[[:space:]]+(.*?)[[:space:]]+(.*?)[[:space:]]+(.*)"
