@@ -42,13 +42,28 @@
 #' @examples 
 #' f <- system.file(package = "cronR", "extdata", "helloworld.R")
 #' cmd <- cron_rscript(f)
-#' cron_add(command = cmd, frequency = 'minutely', id = 'test1', description = 'My process 1')
-#' cron_add(command = cmd, frequency = 'daily', at="7AM", id = 'test2', description = 'My process 2')
+#' cmd
+#' 
+#' cron_add(command = cmd, frequency = 'minutely', 
+#'   id = 'test1', description = 'My process 1', tags = c('lab', 'xyz'))
+#' cron_add(command = cmd, frequency = 'daily', at='7AM', id = 'test2')
 #' cron_njobs()
 #' 
 #' cron_ls()
 #' cron_clear(ask=FALSE)
 #' cron_ls()
+#' 
+#' cron_add(cmd, frequency = 'minutely', id = 'job1', description = 'Customers')
+#' cron_add(cmd, frequency = 'hourly', id = 'job2', description = 'Weather')
+#' cron_add(cmd, frequency = 'hourly', id = 'job3', days_of_week = c(1, 2))
+#' cron_add(cmd, frequency = 'hourly', id = 'job4', at = '00:20', days_of_week = c(1, 2))
+#' cron_add(cmd, frequency = 'daily', id = 'job5', at = '14:20')
+#' cron_add(cmd, frequency = 'daily', id = 'job6', at = '14:20', days_of_week = c(0, 3, 5))
+#' cron_add(cmd, frequency = 'daily', id = 'job7', at = '23:59', days_of_month = c(1, 30))
+#' cron_add(cmd, frequency = 'monthly', id = 'job8', at = '10:30', 
+#'   days_of_month = 'first', days_of_week = '*')
+#' cron_ls()
+#' cron_clear(ask=FALSE)
 cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week, months,
   id, tags="", description="", dry_run=FALSE, user="") {
   

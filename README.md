@@ -30,10 +30,42 @@ The package contains also an RStudio add-in. If you install the package and use 
 
 ![cronR](vignettes/cronR-rstudioaddin.png) 
 
+
+Usage
+-----------
+
+Some example use cases are shown below, indicating to schedule a script at specific timepoints.
+
+```
+library(cronR)
+f <- system.file(package = "cronR", "extdata", "helloworld.R")
+cmd <- cron_rscript(f)
+cmd
+
+cron_add(command = cmd, frequency = 'minutely', id = 'test1', description = 'My process 1', tags = c('lab', 'xyz'))
+cron_add(command = cmd, frequency = 'daily', at='7AM', id = 'test2')
+cron_njobs()
+
+cron_ls()
+cron_clear(ask=FALSE)
+cron_ls()
+
+cron_add(cmd, frequency = 'minutely', id = 'job1', description = 'Customers')
+cron_add(cmd, frequency = 'hourly', id = 'job2', description = 'Weather')
+cron_add(cmd, frequency = 'hourly', id = 'job3', days_of_week = c(1, 2))
+cron_add(cmd, frequency = 'hourly', id = 'job4', at = '00:20', days_of_week = c(1, 2))
+cron_add(cmd, frequency = 'daily', id = 'job5', at = '14:20')
+cron_add(cmd, frequency = 'daily', id = 'job6', at = '14:20', days_of_week = c(0, 3, 5))
+cron_add(cmd, frequency = 'daily', id = 'job7', at = '23:59', days_of_month = c(1, 30))
+cron_add(cmd, frequency = 'monthly', id = 'job8', at = '10:30', days_of_month = 'first', days_of_week = '*')
+cron_ls()
+cron_clear(ask=FALSE)
+```
+
 Install
 -----------
 
-Make sure the cron daemon is running. On Debian this is done as follows.
+Make sure the cron daemon (https://en.wikipedia.org/wiki/Cron) is running. On Debian this is done as follows.
 ```
 sudo apt-get update
 sudo apt-get install -y cron
