@@ -20,5 +20,6 @@ Suggests:
     testthat
 License: MIT + file LICENSE
 VignetteBuilder: knitr
+OS_type: unix
 SystemRequirements: cron
 RoxygenNote: 5.0.1
