@@ -1,3 +1,5 @@
+*This project is now superceded by the fork at https://github.com/bnosac/cronR.*
+
 # cronR
 
 `cronR` is a simple R package for managing your cron jobs.
