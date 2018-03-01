@@ -62,7 +62,8 @@ cron_rstudioaddin <- function(RscriptRepository) {
                                                           shiny::verbatimTextOutput('currentfileselected'),
                                                           shiny::dateInput('date', label = "Launch date:", startview = "month", weekstart = 1, min = Sys.Date()),
                                                           shiny::textInput('hour', label = "Launch hour:", value = format(Sys.time() + 122, "%H:%M")),
-                                                          shiny::radioButtons('task', label = "Schedule:", choices = c('ONCE', 'EVERY MINUTE', 'EVERY HOUR', 'EVERY DAY', 'EVERY WEEK', 'EVERY MONTH'), selected = "ONCE")
+                                                          shiny::radioButtons('task', label = "Schedule:", choices = c('ONCE', 'EVERY MINUTE', 'EVERY HOUR', 'EVERY DAY', 'EVERY WEEK', 'EVERY MONTH', 'ASIS'), selected = "ONCE"),
+                                                          shiny::textInput('custom_schedule', label = "ASIS cron schedule", value = "")
                                             ),
                                             shiny::column(6,
                                                           shiny::textInput('jobdescription', label = "Job description", value = "I execute things"),
@@ -176,9 +177,12 @@ cron_rstudioaddin <- function(RscriptRepository) {
       starttime <- input$hour
       rscript_args <- input$rscript_args
       frequency <- factor(input$task, 
-                          levels = c('ONCE', 'EVERY MINUTE', 'EVERY HOUR', 'EVERY DAY', 'EVERY WEEK', 'EVERY MONTH'),
-                          labels = c('once', 'minutely', 'hourly', 'daily', 'weekly', 'monthly'))
+                          levels = c('ONCE', 'EVERY MINUTE', 'EVERY HOUR', 'EVERY DAY', 'EVERY WEEK', 'EVERY MONTH', "ASIS"),
+                          labels = c('once', 'minutely', 'hourly', 'daily', 'weekly', 'monthly', 'asis'))
       frequency <- as.character(frequency)
+      if(frequency == "asis"){
+        
+      }
       
       ##
       ## Copy the uploaded file from the webapp to the main folder to store the scheduled rscripts.
@@ -212,6 +216,8 @@ cron_rstudioaddin <- function(RscriptRepository) {
       }else if(frequency %in% c('once')){
         message(sprintf("This is not a cron schedule but will launch: %s", sprintf('nohup %s &', cmd)))
         system(sprintf('nohup %s &', cmd))
+      }else{
+        cron_add(command = cmd, frequency = input$custom_schedule, id = input$jobid, tags = input$jobtags, description = input$jobdescription)  
       }
       
       # Reset ui inputs
