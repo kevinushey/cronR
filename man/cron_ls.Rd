@@ -19,4 +19,3 @@ We only list the contents that are handeld by \code{cronR}.
 \examples{
 cron_ls()
 }
-

@@ -16,7 +16,7 @@ cronjob(command, frequency = "daily", at, days_of_month, days_of_week, months,
 
 \item{frequency}{A character string equal to one of 
 \code{"minutely"}, \code{"hourly"}, \code{"daily"},
-\code{"monthly"}, or \code{"yearly"}.}
+\code{"monthly"}, or \code{"yearly"}. Or any complex cron schedule - see the examples.}
 
 \item{at}{The actual time of day at which to execute the command.
 When unspecified, we default to \code{"3AM"}, when the command is to
@@ -88,8 +88,9 @@ cron_add(cmd, frequency = 'daily', id = 'job6', at = '14:20', days_of_week = c(0
 cron_add(cmd, frequency = 'daily', id = 'job7', at = '23:59', days_of_month = c(1, 30))
 cron_add(cmd, frequency = 'monthly', id = 'job8', at = '10:30', 
   days_of_month = 'first', days_of_week = '*')
+cron_add(cmd, frequency = '@reboot', id = 'job9', description = 'Good morning')
+cron_add(cmd, frequency = '*/15 * * * *', id = 'job10', description = 'Every 15 min')   
 cron_ls()
 cron_clear(ask=FALSE)
 }
 }
-

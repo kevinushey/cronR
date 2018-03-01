@@ -15,4 +15,3 @@ List the number of rCron cron jobs
 \examples{
 cron_njobs()
 }
-

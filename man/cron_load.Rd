@@ -14,4 +14,3 @@ cron_load(file, user = "")
 \description{
 Load a crontab from file
 }
-

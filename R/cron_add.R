@@ -20,7 +20,7 @@
 #' @param command A command to execute.
 #' @param frequency A character string equal to one of 
 #'   \code{"minutely"}, \code{"hourly"}, \code{"daily"},
-#'   \code{"monthly"}, or \code{"yearly"}.
+#'   \code{"monthly"}, or \code{"yearly"}. Or any complex cron schedule - see the examples. 
 #' @param at The actual time of day at which to execute the command.
 #'   When unspecified, we default to \code{"3AM"}, when the command is to
 #'   be run less frequently than \code{"hourly"}.
@@ -65,6 +65,8 @@
 #' cron_add(cmd, frequency = 'daily', id = 'job7', at = '23:59', days_of_month = c(1, 30))
 #' cron_add(cmd, frequency = 'monthly', id = 'job8', at = '10:30', 
 #'   days_of_month = 'first', days_of_week = '*')
+#' cron_add(cmd, frequency = '@reboot', id = 'job9', description = 'Good morning')
+#' cron_add(cmd, frequency = '*/15 * * * *', id = 'job10', description = 'Every 15 min')   
 #' cron_ls()
 #' cron_clear(ask=FALSE)
 #' }
@@ -145,7 +147,7 @@ cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week
       job[["month"]] <- 1
       job[["day_of_week"]] <- 1
     },
-    stop("Unrecognized string passed to frequency: '", frequency, "'")
+    message(sprintf("At your own risk: will set the cron schedule as is: '%s'", frequency))
   )
   
   if (!missing(days_of_week)) {
@@ -189,11 +191,18 @@ cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week
     paste0("## tags: ", paste(tags, collapse=", ")),
     paste0("## desc: ", description)
   )
+  if(frequency %in% c("minutely", "hourly", "dayly", "monthly", "yearly")){
+    job_str <- paste( sep="\n", collapse="\n",
+                      header,
+                      paste(job, collapse=" ", sep=" ")
+    )  
+  }else{
+    job_str <- paste( sep="\n", collapse="\n",
+                      header,
+                      paste(frequency, job$command, sep=" ")
+    )
+  }
   
-  job_str <- paste( sep="\n", collapse="\n",
-    header,
-    paste(job, collapse=" ", sep=" ")
-  )
   
   message("Adding cronjob:\n",
     "---------------\n\n",
