@@ -180,9 +180,6 @@ cron_rstudioaddin <- function(RscriptRepository) {
                           levels = c('ONCE', 'EVERY MINUTE', 'EVERY HOUR', 'EVERY DAY', 'EVERY WEEK', 'EVERY MONTH', "ASIS"),
                           labels = c('once', 'minutely', 'hourly', 'daily', 'weekly', 'monthly', 'asis'))
       frequency <- as.character(frequency)
-      if(frequency == "asis"){
-        
-      }
       
       ##
       ## Copy the uploaded file from the webapp to the main folder to store the scheduled rscripts.
@@ -216,7 +213,7 @@ cron_rstudioaddin <- function(RscriptRepository) {
       }else if(frequency %in% c('once')){
         message(sprintf("This is not a cron schedule but will launch: %s", sprintf('nohup %s &', cmd)))
         system(sprintf('nohup %s &', cmd))
-      }else{
+      }else if(frequency %in% c('asis')){
         cron_add(command = cmd, frequency = input$custom_schedule, id = input$jobid, tags = input$jobtags, description = input$jobdescription)  
       }
       
