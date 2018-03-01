@@ -30,4 +30,3 @@ cron_load(file="crontab_backup")
 \seealso{
 \code{\link{file.copy}}
 }
-

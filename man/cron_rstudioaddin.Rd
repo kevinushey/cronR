@@ -20,4 +20,3 @@ Launch an RStudio addin which allows to schedule an Rscript interactively.
 cron_rstudioaddin()
 }
 }
-

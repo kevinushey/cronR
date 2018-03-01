@@ -35,4 +35,3 @@ cron_rscript(f, rscript_args = c("more", "arguments", "passed", "on", "to", "the
 cron_rscript(f, log_append = FALSE)
 cron_rscript(f, log_append = TRUE)
 }
-
