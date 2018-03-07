@@ -1,6 +1,10 @@
 Package: cronR
 ================
 
+Version: 0.4.0 [2018-03-07]
+- Allow creating any cron schedule + update rstudio addin + added examples on that
+- No longer use the extdata folder if the user does not have right permissions
+
 Version: 0.3.0 [2017-03-03]
 - Add cron_rscript
 - Add examples
