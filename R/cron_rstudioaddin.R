@@ -22,7 +22,11 @@ cron_rstudioaddin <- function(RscriptRepository) {
   requireNamespace("shiny")
   requireNamespace("miniUI")
   requireNamespace("shinyFiles")
-  current_repo <- file.path(system.file("extdata", package="cronR"), "RscriptRepository.rds")
+  current_repo <- file.path(system.file("extdata", package="cronR"), ".RscriptRepository.rds")
+  if(file.access(dirname(current_repo), mode = 2) == -1){
+    ## No access to the root folder by this user, take tempfolder - will not persist across R sessions
+    current_repo <- file.path(tempdir(), ".RscriptRepository.rds")
+  }
   if(missing(RscriptRepository)){
     if(file.exists(current_repo)){
       RscriptRepository <- readRDS(file = current_repo)
