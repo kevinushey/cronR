@@ -191,7 +191,7 @@ cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week
     paste0("## tags: ", paste(tags, collapse=", ")),
     paste0("## desc: ", description)
   )
-  if(frequency %in% c("minutely", "hourly", "dayly", "monthly", "yearly")){
+  if(frequency %in% c("minutely", "hourly", "daily", "monthly", "yearly")){
     job_str <- paste( sep="\n", collapse="\n",
                       header,
                       paste(job, collapse=" ", sep=" ")
