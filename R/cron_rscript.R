@@ -5,6 +5,8 @@
 #' @param rscript_args a character string with extra arguments to be passed on to Rscript
 #' @param cmd path to Rscript. Defaults to R_HOME/bin/Rscript
 #' @param log_append logical, append to the log or overwrite
+#' @param log_timestamp logical, indicating to append a timestamp to the script log filename in the default argument of \code{rscript_log}. 
+#' This will only work if the path to the log folder does not contain spaces.
 #' @return a character string with a command which can e.g. be put as a cronjob for running a simple R script at specific timepoints
 #' @export
 #' @examples
@@ -15,11 +17,13 @@
 #' 
 #' cron_rscript(f, log_append = FALSE)
 #' cron_rscript(f, log_append = TRUE)
+#' cron_rscript(f, log_append = FALSE, log_timestamp = TRUE)
 cron_rscript <- function(rscript,
-                         rscript_log = sprintf("%s.log", tools::file_path_sans_ext(rscript)),
+                         rscript_log = sprintf("%s%s.log", tools::file_path_sans_ext(rscript), ifelse(log_timestamp, "-`date+\\%Y-\\%m-\\%d_\\%H:\\%M:\\%S`", "")),
                          rscript_args = "",
                          cmd = file.path(Sys.getenv("R_HOME"), "bin", "Rscript"),
-                         log_append = TRUE) {
+                         log_append = TRUE,
+                         log_timestamp = FALSE) {
   stopifnot(file.exists(rscript))
   if(length(rscript_args) > 0){
     rscript_args <- paste(rscript_args, collapse = " ")

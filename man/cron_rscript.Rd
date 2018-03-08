@@ -4,10 +4,11 @@
 \alias{cron_rscript}
 \title{Create a command to execute an R script which can be scheduled with cron_add}
 \usage{
-cron_rscript(rscript, rscript_log = sprintf("\%s.log",
-  tools::file_path_sans_ext(rscript)), rscript_args = "",
-  cmd = file.path(Sys.getenv("R_HOME"), "bin", "Rscript"),
-  log_append = TRUE)
+cron_rscript(rscript, rscript_log = sprintf("\%s\%s.log",
+  tools::file_path_sans_ext(rscript), ifelse(log_timestamp,
+  "-`date+\\\\\%Y-\\\\\%m-\\\\\%d_\\\\\%H:\\\\\%M:\\\\\%S`", "")),
+  rscript_args = "", cmd = file.path(Sys.getenv("R_HOME"), "bin",
+  "Rscript"), log_append = TRUE, log_timestamp = FALSE)
 }
 \arguments{
 \item{rscript}{character string with the path to an R script with .r or .R extension}
@@ -19,6 +20,9 @@ cron_rscript(rscript, rscript_log = sprintf("\%s.log",
 \item{cmd}{path to Rscript. Defaults to R_HOME/bin/Rscript}
 
 \item{log_append}{logical, append to the log or overwrite}
+
+\item{log_timestamp}{logical, indicating to append a timestamp to the script log filename in the default argument of \code{rscript_log}. 
+This will only work if the path to the log folder does not contain spaces.}
 }
 \value{
 a character string with a command which can e.g. be put as a cronjob for running a simple R script at specific timepoints
@@ -34,4 +38,5 @@ cron_rscript(f, rscript_args = c("more", "arguments", "passed", "on", "to", "the
 
 cron_rscript(f, log_append = FALSE)
 cron_rscript(f, log_append = TRUE)
+cron_rscript(f, log_append = FALSE, log_timestamp = TRUE)
 }
