@@ -9,6 +9,9 @@ Description: This package allows you to create, edit, and remove cron
     jobs on your unix-alike system. It provides a set of easy-to-use wrappers
     to crontab.
 Imports:
-    digest
+    digest,
+    shiny,
+    miniUI,
+    shinyFiles
 License: MIT + file LICENSE
 SystemRequirements: cron
