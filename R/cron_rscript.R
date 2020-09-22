@@ -7,6 +7,7 @@
 #' @param log_append logical, append to the log or overwrite
 #' @param log_timestamp logical, indicating to append a timestamp to the script log filename in the default argument of \code{rscript_log}. 
 #' This will only work if the path to the log folder does not contain spaces.
+#' @param workdir If provided, Rscript will be run from this working directory.
 #' @return a character string with a command which can e.g. be put as a cronjob for running a simple R script at specific timepoints
 #' @export
 #' @examples
@@ -18,12 +19,17 @@
 #' cron_rscript(f, log_append = FALSE)
 #' cron_rscript(f, log_append = TRUE)
 #' cron_rscript(f, log_append = FALSE, log_timestamp = TRUE)
+#' 
+#' ## run from home directory
+#' cron_rscript(f, workdir = normalizePath("~"))
+#' 
 cron_rscript <- function(rscript,
                          rscript_log = sprintf("%s%s.log", tools::file_path_sans_ext(rscript), ifelse(log_timestamp, "-`date+\\%Y-\\%m-\\%d_\\%H:\\%M:\\%S`", "")),
                          rscript_args = "",
                          cmd = file.path(Sys.getenv("R_HOME"), "bin", "Rscript"),
                          log_append = TRUE,
-                         log_timestamp = FALSE) {
+                         log_timestamp = FALSE,
+                         workdir = NULL) {
   stopifnot(file.exists(rscript))
   if(length(rscript_args) > 0){
     rscript_args <- paste(rscript_args, collapse = " ")
@@ -35,6 +41,9 @@ cron_rscript <- function(rscript,
     cmd <- sprintf('%s %s %s >> %s 2>&1', cmd, shQuote(rscript), rscript_args, shQuote(rscript_log))  
   }else{
     cmd <- sprintf('%s %s %s > %s 2>&1', cmd, shQuote(rscript), rscript_args, shQuote(rscript_log))  
+  }
+  if(!is.null(workdir)){
+    sprintf("%s %s %s %s",  "cd", shQuote(workdir), "&&", cmd)
   }
   cmd
 }
