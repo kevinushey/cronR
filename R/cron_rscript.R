@@ -43,7 +43,7 @@ cron_rscript <- function(rscript,
     cmd <- sprintf('%s %s %s > %s 2>&1', cmd, shQuote(rscript), rscript_args, shQuote(rscript_log))  
   }
   if(!is.null(workdir)){
-    sprintf("%s %s %s %s",  "cd", shQuote(workdir), "&&", cmd)
+    cmd <- sprintf("%s %s %s %s",  "cd", shQuote(workdir), "&&", cmd)
   }
   cmd
 }
