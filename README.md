@@ -76,11 +76,6 @@ sudo apt-get install -y cron
 sudo cron start
 ```
 
-Install the latest version from github:
-```
-devtools::install_github("bnosac/cronR")
-```
-
 If you want the RStudio add-in to work, also install miniUI, shiny and shinyFiles
 ```
 install.packages('miniUI')
