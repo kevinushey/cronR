@@ -8,7 +8,7 @@ parse_crontab <- function(crontab, user="") {
       )
     } else {
       crontab <- suppressWarnings(
-        system(paste("crontab -u", user, "-l", intern=TRUE, ignore.stderr=TRUE))
+        system(paste("crontab -u", user, "-l"), intern=TRUE, ignore.stderr=TRUE)
       )
     }
   }
