@@ -1,7 +1,7 @@
 Package: cronR
 Type: Package
 Title: Schedule R Scripts and Processes with the 'cron' Job Scheduler
-Version: 0.4.2
+Version: 0.5.0
 Authors@R: c(person("Jan", "Wijffels", role = c("aut", "cre", "cph"), email =
     "jwijffels@bnosac.be"), person("BNOSAC", role = "cph"), person("Kevin", "Ushey",
     role = c("cph"), email = "kevinushey@gmail.com"))
@@ -22,4 +22,4 @@ License: MIT + file LICENSE
 VignetteBuilder: knitr
 OS_type: unix
 SystemRequirements: cron
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1

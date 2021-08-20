@@ -1,6 +1,15 @@
 Package: cronR
 ================
 
+Version: 0.5.0 [2021-08-20]
+
+- Change default directory of R script deployment in the addin: cron_rstudioaddin
+
+Version: 0.4.2 [2018-03-07]
+
+- Allow to specify working directory for launching scripts
+- Add rmarkdown as dependency 
+
 Version: 0.4.0 [2018-03-07]
 - Allow creating any cron schedule + update rstudio addin + added examples on that
 - No longer use the extdata folder if the user does not have right permissions

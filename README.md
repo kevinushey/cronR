@@ -3,15 +3,15 @@ cronR
 
 ![cronR](vignettes/cronR-logo.png) 
 
-Schedule R scripts/processes with the cron scheduler. This allows R users working on Unix/Linux to automate R processes on specific timepoints from R itself.
-Mark that if you are looking for a Windows scheduler, you might be interested in the R package taskscheduleR available at
+Schedule R scripts/processes with the cron scheduler. This allows R users working on Unix/Linux to automate R processes at specific timepoints from R itself.
+Note that if you are looking for a Windows scheduler, you might be interested in the R package taskscheduleR available at
 https://github.com/bnosac/taskscheduleR
 
 
 Basic usage
 -----------
 
-This R package allows to 
+This R package allows you to 
 
 * Get the list of scheduled jobs
 * Remove scheduled jobs
@@ -20,15 +20,15 @@ This R package allows to
   + You can schedule tasks 'ONCE', 'EVERY MINUTE', 'EVERY HOUR', 'EVERY DAY', 'EVERY WEEK', 'EVERY MONTH' or any complex schedule
   + The task log contains the stdout & stderr of the Rscript which was run on that timepoint. This log can be found at the same folder as the R script
 
-When the task has run which is scheduled with the RStudio addin, you can look at the log which contains everything from stdout and stderr. The log file is located at the directory where the R script is located.
-
-
 RStudio add-in
 -----------
 
-The package contains also an RStudio add-in. If you install the package and use RStudio version 0.99.893 or later you can just click to schedule a task. Just click Addins > Schedule R scripts on Linux/Unix.
+The package also contains an RStudio addin. If you install the package and use RStudio version 0.99.893 or later you can just click to schedule a task. Just click Addins > Schedule R scripts on Linux/Unix.
 
-![cronR](vignettes/cronR-rstudioaddin.png) 
+![](vignettes/cronR-rstudioaddin.png) 
+
+- Alternatively, run `cronR::cron_rstudioaddin()` to open the addin interface. If you use that addin to schedule scripts, by default it will copy the R scripts to your current working directory and launch the copied scripts from there. A different directory can be specified by passing an argument to the `RscriptRepository` parameter `cronR::cron_rstudioaddin(RscriptRepository = "/path/to/your/deployment/directory")`
+- You can also set the `CRON_LIVE` environment variable to specify a default directory to copy scheduled scripts to. This can be done by putting something like `CRON_LIVE="/path/to/your/deployment/directory"` in your .Renviron or .Rprofile file. See ?Startup
 
 
 Usage
@@ -85,11 +85,11 @@ install.packages('shinyFiles')
 
 Now have a look at `?cron_add` or start the RStudio addin
 
-
-Warning
+Notes
 -----------
 
-Currently, `cronR` does not preserve or handle cron jobs not
+- Consider adding `options(echo = TRUE)` at the start of your R scripts in order to debug your scripts in case of errors.
+- Currently, `cronR` does not preserve or handle cron jobs not
 generated through the package. This will be handled some time in
 the future. To be safe, you should run `cron_save("cron.backup")`
 before fiddling around.
