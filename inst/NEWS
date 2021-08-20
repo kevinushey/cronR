@@ -4,6 +4,7 @@ Package: cronR
 Version: 0.5.0 [2021-08-20]
 
 - Change default directory of R script deployment in the addin: cron_rstudioaddin
+- Fix issue #42 - warning when passing user argument
 
 Version: 0.4.2 [2018-03-07]
 
