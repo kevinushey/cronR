@@ -4,12 +4,11 @@
 \alias{cron_rstudioaddin}
 \title{Launch an RStudio addin which allows to schedule an Rscript interactively.}
 \usage{
-cron_rstudioaddin(RscriptRepository)
+cron_rstudioaddin(RscriptRepository = Sys.getenv("CRON_LIVE", unset = getwd()))
 }
 \arguments{
-\item{RscriptRepository}{path to the folder where R scripts will be copied to and launched from,
-and log files will be written to.
-Defaults to the current working directory. Can be set with the \code{CRON_LIVE} environment variable.}
+\item{RscriptRepository}{path to the folder where R scripts will be copied to and launched from, and by default log files will be written to.
+Defaults to the current working directory or in case it is set, the path set in the \code{CRON_LIVE} environment variable.}
 }
 \value{
 the return of \code{\link[shiny]{runGadget}}

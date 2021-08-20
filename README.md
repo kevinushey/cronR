@@ -25,21 +25,11 @@ RStudio add-in
 
 The package also contains an RStudio addin. If you install the package and use RStudio version 0.99.893 or later you can just click to schedule a task. Just click Addins > Schedule R scripts on Linux/Unix.
 
-![cronR](vignettes/cronR-rstudioaddin.png) 
+![](vignettes/cronR-rstudioaddin.png) 
 
-Alternatively, run `cronR::cron_rstudioaddin()` to open the addin interface.
+- Alternatively, run `cronR::cron_rstudioaddin()` to open the addin interface. If you use that addin to schedule scripts, by default it will copy the R scripts to your current working directory and launch the copied scripts from there. A different directory can be specified by passing an argument to the `RscriptRepository` parameter `cronR::cron_rstudioaddin(RscriptRepository = "/path/to/your/deployment/directory")`
+- You can also set the `CRON_LIVE` environment variable to specify a default directory to copy scheduled scripts to. This can be done by putting something like `CRON_LIVE="/path/to/your/deployment/directory"` in your .Renviron or .Rprofile file. See ?Startup
 
-If you use the addin, by default, the scheduled script will be copied (and a logfile of the same name will be created) in the current working directory. A different directory can be specified by passing an argument to the `RscriptRepository` parameter:
-
-```
-cronR::cron_rstudioaddin(RscriptRepository = "/path/to/directory/")
-```
-
-You can also set the `CRON_LIVE` environment variable to specify a default directory to copy scheduled scripts and logfiles to. This can be done by manually adding an entry in the [Renviron or Renviron.site files](https://support.rstudio.com/hc/en-us/articles/360047157094-Managing-R-with-Rprofile-Renviron-Rprofile-site-Renviron-site-rsession-conf-and-repos-conf). You can easily do this by running `usethis::edit_r_environ()`, and adding an entry as follows:
-
-```
-CRON_LIVE="/path/to/directory/"
-```
 
 Usage
 -----------
@@ -95,11 +85,11 @@ install.packages('shinyFiles')
 
 Now have a look at `?cron_add` or start the RStudio addin
 
-
-Warning
+Notes
 -----------
 
-Currently, `cronR` does not preserve or handle cron jobs not
+- Consider adding `options(echo = TRUE)` at the start of your R scripts in order to debug your scripts in case of errors.
+- Currently, `cronR` does not preserve or handle cron jobs not
 generated through the package. This will be handled some time in
 the future. To be safe, you should run `cron_save("cron.backup")`
 before fiddling around.
