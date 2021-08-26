@@ -1,23 +1,24 @@
 Package: cronR
 Type: Package
 Title: Schedule R Scripts and Processes with the 'cron' Job Scheduler
-Version: 0.5.0
-Authors@R: c(person("Jan", "Wijffels", role = c("aut", "cre", "cph"), email =
-    "jwijffels@bnosac.be"), person("BNOSAC", role = "cph"), person("Kevin", "Ushey",
-    role = c("cph"), email = "kevinushey@gmail.com"))
+Version: 0.5.1
+Authors@R: c(
+    person("Jan", "Wijffels", role = c("aut", "cre", "cph"), email = "jwijffels@bnosac.be"), 
+    person("BNOSAC", role = "cph"), 
+    person("Kevin", "Ushey", role = c("cph"), email = "kevinushey@gmail.com"))
 Maintainer: Jan Wijffels <jwijffels@bnosac.be>
 Description: Create, edit, and remove 'cron' jobs on your unix-alike system. The package provides a set of easy-to-use wrappers
     to 'crontab'. It also provides an RStudio add-in to easily launch and schedule your scripts.
 URL: https://github.com/bnosac/cronR
-Imports:
+Imports: 
     digest
-Suggests:
+Suggests: 
     knitr,
     rmarkdown,
     miniUI,
     shiny (>= 0.11),
     shinyFiles (>= 0.6.0),
-    testthat
+    tinytest
 License: MIT + file LICENSE
 VignetteBuilder: knitr
 OS_type: unix

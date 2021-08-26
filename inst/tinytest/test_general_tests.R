@@ -1,8 +1,5 @@
-context("cronR-general")
 
-test_that("cronR general examples work as expected", {
-  skip_on_cran()
-  
+expect_silent({
   cron_ls()
   cron_njobs()
   cron_add("testing!", id="abc", tags=c("test1", "test2"),
@@ -32,6 +29,4 @@ test_that("cronR general examples work as expected", {
   cron_njobs()
   cron_ls("abc")
   cron_clear(FALSE)
-  
 })
-

@@ -1,6 +1,11 @@
 Package: cronR
 ================
 
+Version: 0.5.1 [2021-08-26]
+
+- Switch unit testing from testthat to tinytest
+- Fix unit test if user has access rights to /opt folder (e.g. as root)
+
 Version: 0.5.0 [2021-08-20]
 
 - Change default directory of R script deployment in the addin: cron_rstudioaddin
