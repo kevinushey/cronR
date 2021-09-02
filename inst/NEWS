@@ -4,6 +4,7 @@ Package: cronR
 Version: 0.6.0 [2021-09-02]
 
 - Make sure always ask for approval when executing cron_add, cron_rm, cron_clear unless explicitely indicating ask=FALSE
+- Removed vignette as it is available in the README
 
 Version: 0.5.1 [2021-08-26]
 
