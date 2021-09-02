@@ -48,11 +48,13 @@ cron_rm <- function(id, dry_run=FALSE, user="", ask=TRUE) {
   )
   deparsed <- deparse_crontab(new_crontab)
   
-  cat(sep="", "Are you sure you want to remove the specified cron job with id '", id, "'? [y/n]: ")
-  input <- tolower(scan(what=character(), n=1, quiet=TRUE))
-  if (!input %in% "y") {
-    message("No action taken.")
-    return(invisible())
+  if(ask){
+    cat(sep="", "Are you sure you want to remove the specified cron job with id '", id, "'? [y/n]: ")
+    input <- tolower(scan(what=character(), n=1, quiet=TRUE))
+    if (!input %in% "y") {
+      message("No action taken.")
+      return(invisible())
+    } 
   }
   
   if (!dry_run) {

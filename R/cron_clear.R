@@ -36,10 +36,11 @@ cron_clear <- function(ask=TRUE, user="") {
         message("Crontab cleared.")  
       }
     } else {
+      ok <- 0
       message("No action taken.")
     }
   } else {
-    system(sprintf("crontab -u %s -r", current_user))
+    ok <- system(sprintf("crontab -u %s -r", current_user))
   }
-  
+  return (invisible(ok))
 }

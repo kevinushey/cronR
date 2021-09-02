@@ -207,12 +207,15 @@ cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week
                       paste(frequency, job$command, sep=" ")
     )
   }
-  cat(sep="", "Are you sure you want to add the specified cron job: '", job$command, "'? [y/n]: ")
-  input <- tolower(scan(what=character(), n=1, quiet=TRUE))
-  if (!input %in% "y") {
-    message("No action taken.")
-    return(invisible())
+  if(ask){
+    cat(sep="", "Are you sure you want to add the specified cron job: '", job$command, "'? [y/n]: ")
+    input <- tolower(scan(what=character(), n=1, quiet=TRUE))
+    if (!input %in% "y") {
+      message("No action taken.")
+      return(invisible())
+    }
   }
+  
   
   
   message("Adding cronjob:\n",
