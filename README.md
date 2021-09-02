@@ -1,7 +1,7 @@
 cronR
 =========
 
-![cronR](vignettes/cronR-logo.png) 
+![cronR](tools/cronR-logo.png) 
 
 Schedule R scripts/processes with the cron scheduler. This allows R users working on Unix/Linux to automate R processes at specific timepoints from R itself.
 Note that if you are looking for a Windows scheduler, you might be interested in the R package taskscheduleR available at
@@ -25,7 +25,7 @@ RStudio add-in
 
 The package also contains an RStudio addin. If you install the package and use RStudio version 0.99.893 or later you can just click to schedule a task. Just click Addins > Schedule R scripts on Linux/Unix.
 
-![](vignettes/cronR-rstudioaddin.png) 
+![](tools/cronR-rstudioaddin.png) 
 
 - Alternatively, run `cronR::cron_rstudioaddin()` to open the addin interface. If you use that addin to schedule scripts, by default it will copy the R scripts to your current working directory and launch the copied scripts from there. A different directory can be specified by passing an argument to the `RscriptRepository` parameter `cronR::cron_rstudioaddin(RscriptRepository = "/path/to/your/deployment/directory")`
 - You can also set the `CRON_LIVE` environment variable to specify a default directory to copy scheduled scripts to. This can be done by putting something like `CRON_LIVE="/path/to/your/deployment/directory"` in your .Renviron or .Rprofile file. See ?Startup
@@ -38,7 +38,7 @@ Some example use cases are shown below, indicating to schedule a script at speci
 
 ```
 library(cronR)
-f <- system.file(package = "cronR", "extdata", "helloworld.R")
+f   <- system.file(package = "cronR", "extdata", "helloworld.R")
 cmd <- cron_rscript(f)
 cmd
 
