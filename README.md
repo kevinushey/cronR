@@ -66,7 +66,7 @@ cron_ls()
 cron_clear(ask = TRUE)
 ```
 
-By default, when you use the functions `cron_add`, `cron_rm`, `cron_clear`, `cron_load`, it will ask for permission, unless you put the argument `ask=TRUE` in each of these functions.
+By default, when you use the functions `cron_add`, `cron_rm`, `cron_clear`, `cron_load`, a prompt will ask for your permission to update the cron schedule, unless you put the argument `ask=FALSE` in each of these functions, in which case you automatically allow to update the schedule. (new since R package version 0.6.0)
 
 
 Install
