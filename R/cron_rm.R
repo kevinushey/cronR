@@ -8,10 +8,13 @@
 #' @param dry_run Boolean; if \code{TRUE} we do not submit the cron job; 
 #'   instead we return the parsed text that would be submitted as a cron job.
 #' @param user The user whose crontab we will be modifying.
+#' @param ask Boolean; show prompt asking for validation
 #' @export
 #' @examples 
-#' \dontrun{
-#' f <- system.file(package = "cronR", "extdata", "helloworld.R")
+#' \dontshow{if(interactive())
+#' \{
+#' }
+#' f   <- system.file(package = "cronR", "extdata", "helloworld.R")
 #' cmd <- cron_rscript(f)
 #' cron_add(command = cmd, frequency = 'minutely', id = 'test1', description = 'My process 1')
 #' cron_njobs()
@@ -19,9 +22,11 @@
 #' cron_rm(id = "test1")
 #' cron_njobs()
 #' cron_ls()
+#' 
+#' \dontshow{
+#' \}
 #' }
-cron_rm <- function(id, dry_run=FALSE, user="") {
-  
+cron_rm <- function(id, dry_run=FALSE, user="", ask=TRUE) {
   crontab <- parse_crontab(user=user)
   if (!is.null(crontab$cronR)) {
     to_keep <- sapply(crontab$cronR, function(x) {
@@ -42,6 +47,13 @@ cron_rm <- function(id, dry_run=FALSE, user="") {
     other=crontab$other
   )
   deparsed <- deparse_crontab(new_crontab)
+  
+  cat(sep="", "Are you sure you want to remove the specified cron job with id '", id, "'? [y/n]: ")
+  input <- tolower(scan(what=character(), n=1, quiet=TRUE))
+  if (!input %in% "y") {
+    message("No action taken.")
+    return(invisible())
+  }
   
   if (!dry_run) {
     if (!(length(new_crontab))) {

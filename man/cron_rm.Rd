@@ -4,7 +4,7 @@
 \alias{cron_rm}
 \title{Remove a cronjob}
 \usage{
-cron_rm(id, dry_run = FALSE, user = "")
+cron_rm(id, dry_run = FALSE, user = "", ask = TRUE)
 }
 \arguments{
 \item{id}{A set of ids, partially matched from the beginning, 
@@ -15,13 +15,17 @@ matched in the file.}
 instead we return the parsed text that would be submitted as a cron job.}
 
 \item{user}{The user whose crontab we will be modifying.}
+
+\item{ask}{Boolean; show prompt asking for validation}
 }
 \description{
 Use this command to remove a cron job added by \code{cron_add}.
 }
 \examples{
-\dontrun{
-f <- system.file(package = "cronR", "extdata", "helloworld.R")
+\dontshow{if(interactive())
+\{
+}
+f   <- system.file(package = "cronR", "extdata", "helloworld.R")
 cmd <- cron_rscript(f)
 cron_add(command = cmd, frequency = 'minutely', id = 'test1', description = 'My process 1')
 cron_njobs()
@@ -29,5 +33,8 @@ cron_ls()
 cron_rm(id = "test1")
 cron_njobs()
 cron_ls()
+
+\dontshow{
+\}
 }
 }

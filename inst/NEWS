@@ -1,6 +1,10 @@
 Package: cronR
 ================
 
+Version: 0.6.0 [2021-09-02]
+
+- Make sure always ask for approval when executing cron_add, cron_rm, cron_clear unless explicitely indicating ask=FALSE
+
 Version: 0.5.1 [2021-08-26]
 
 - Switch unit testing from testthat to tinytest

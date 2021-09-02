@@ -25,6 +25,15 @@ cron_rstudioaddin <- function(RscriptRepository = Sys.getenv("CRON_LIVE", unset 
 
   check <- NULL
   
+  popup <- shiny::modalDialog(title = "Request for approval", 
+                              "By using this app, you approve that you are aware that the app has access to your cron schedule and that it will add or remove elements in your crontab.", 
+                              shiny::tags$br(),
+                              shiny::tags$br(),
+                              shiny::modalButton("Yes, I know", icon = shiny::icon("play")),
+                              shiny::actionButton(inputId = "ui_validate_no", label = "No I don't want this, close the app", icon = shiny::icon("stop")),
+                              footer = NULL,
+                              easyClose = FALSE)
+  
   ui <- miniUI::miniPage(
     # Shiny fileinput resethandler
     # shiny::tags$script('
@@ -35,7 +44,6 @@ cron_rstudioaddin <- function(RscriptRepository = Sys.getenv("CRON_LIVE", unset 
     #                    $(idBar).css("width", "0%");
     #                    });
     #                    '),
-    
     miniUI::gadgetTitleBar("Use cron to schedule your R script"),
     
     miniUI::miniTabstripPanel(
@@ -107,6 +115,11 @@ cron_rstudioaddin <- function(RscriptRepository = Sys.getenv("CRON_LIVE", unset 
   
   # Server code for the gadget.
   server <- function(input, output, session) {
+    shiny::showModal(popup)
+    shiny::observeEvent(input$ui_validate_no, {
+      shiny::stopApp()
+    })
+    
     volumes <- c('Current working dir' = getwd(), 'HOME' = Sys.getenv('HOME'), 'R Installation' = R.home(), 'Root' = "/")
     getSelectedFile <- function(inputui, default = "No R script selected yet"){
       f <- shinyFiles::parseFilePaths(volumes, inputui)$datapath
@@ -193,20 +206,20 @@ cron_rstudioaddin <- function(RscriptRepository = Sys.getenv("CRON_LIVE", unset 
       cmd <- sprintf("Rscript %s %s >> %s.log 2>&1", myscript, rscript_args, tools::file_path_sans_ext(myscript))
       cmd <- sprintf('%s %s %s >> %s 2>&1', file.path(Sys.getenv("R_HOME"), "bin", "Rscript"), shQuote(myscript), rscript_args, shQuote(sprintf("%s.log", tools::file_path_sans_ext(myscript))))
       if(frequency %in% c('minutely')){
-        cron_add(command = cmd, frequency = frequency, id = input$jobid, tags = input$jobtags, description = input$jobdescription)  
+        cron_add(command = cmd, frequency = frequency, id = input$jobid, tags = input$jobtags, description = input$jobdescription, ask=FALSE)  
       }else if(frequency %in% c('hourly')){
-        cron_add(command = cmd, frequency = frequency, at = starttime, id = input$jobid, tags = input$jobtags, description = input$jobdescription)  
+        cron_add(command = cmd, frequency = frequency, at = starttime, id = input$jobid, tags = input$jobtags, description = input$jobdescription, ask=FALSE)  
       }else if(frequency %in% c('daily')){
-        cron_add(command = cmd, frequency = 'daily', at = starttime, id = input$jobid, tags = input$jobtags, description = input$jobdescription)  
+        cron_add(command = cmd, frequency = 'daily', at = starttime, id = input$jobid, tags = input$jobtags, description = input$jobdescription, ask=FALSE)  
       }else if(frequency %in% c('weekly')){
-        cron_add(command = cmd, frequency = 'daily', days_of_week = days, at = starttime, id = input$jobid, tags = input$jobtags, description = input$jobdescription)  
+        cron_add(command = cmd, frequency = 'daily', days_of_week = days, at = starttime, id = input$jobid, tags = input$jobtags, description = input$jobdescription, ask=FALSE)  
       }else if(frequency %in% c('monthly')){
-        cron_add(command = cmd, frequency = 'monthly', days_of_month = days, days_of_week = 1:7, at = starttime, id = input$jobid, tags = input$jobtags, description = input$jobdescription)  
+        cron_add(command = cmd, frequency = 'monthly', days_of_month = days, days_of_week = 1:7, at = starttime, id = input$jobid, tags = input$jobtags, description = input$jobdescription, ask=FALSE)  
       }else if(frequency %in% c('once')){
         message(sprintf("This is not a cron schedule but will launch: %s", sprintf('nohup %s &', cmd)))
         system(sprintf('nohup %s &', cmd))
       }else if(frequency %in% c('asis')){
-        cron_add(command = cmd, frequency = input$custom_schedule, id = input$jobid, tags = input$jobtags, description = input$jobdescription)  
+        cron_add(command = cmd, frequency = input$custom_schedule, id = input$jobid, tags = input$jobtags, description = input$jobdescription, ask=FALSE)  
       }
       
       # Reset ui inputs
@@ -253,7 +266,7 @@ cron_rstudioaddin <- function(RscriptRepository = Sys.getenv("CRON_LIVE", unset 
       f <- getSelectedFile(inputui = input$crontabSelect, default = "")
       message(f)
       if(f != ""){
-        cron_load(file = f)
+        cron_load(file = f, ask=FALSE)
       }
       output$getFiles <- shiny::renderUI({
         shiny::selectInput(inputId = 'getFiles', "Select job", choices = sapply(cron_current()$cronR, FUN=function(x) x$id))
@@ -266,7 +279,7 @@ cron_rstudioaddin <- function(RscriptRepository = Sys.getenv("CRON_LIVE", unset 
       })
     })
     shiny::observeEvent(input$deletejob, {
-      cron_rm(input$getFiles)
+      cron_rm(input$getFiles, ask=FALSE)
       output$getFiles <- shiny::renderUI({
         shiny::selectInput(inputId = 'getFiles', "Select job", choices = sapply(cron_current()$cronR, FUN=function(x) x$id))
       })

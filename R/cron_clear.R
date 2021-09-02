@@ -4,34 +4,42 @@
 #' @param user The user whose crontab we are clearing.
 #' @export
 #' @examples
-#' \dontrun{
-#' f <- system.file(package = "cronR", "extdata", "helloworld.R")
+#' \dontshow{if(interactive())
+#' \{
+#' }
+#' f   <- system.file(package = "cronR", "extdata", "helloworld.R")
 #' cmd <- cron_rscript(f)
 #' cron_add(command = cmd, frequency = 'minutely', id = 'test1', description = 'My process 1')
 #' cron_add(command = cmd, frequency = 'daily', at="7AM", id = 'test2', description = 'My process 2')
 #' cron_njobs()
 #' 
 #' cron_ls()
-#' cron_clear(ask=FALSE)
+#' cron_clear(ask=TRUE)
 #' cron_ls()
+#' \dontshow{
+#' \}
 #' }
 cron_clear <- function(ask=TRUE, user="") {
   
   if (user == "")
     current_user <- Sys.getenv("USER")
+  else
+    current_user <- user
   
-  if (ask && user == "") {
+  if (ask) {
     cat( sep="", "Are you sure you want to clear all cron jobs for '", 
       current_user, "'? [y/n]: ")
     input <- tolower(scan(what=character(), n=1, quiet=TRUE))
     if (input == "y") {
-      system("crontab -r")
-      message("Crontab cleared.")
+      ok <- system(sprintf("crontab -u %s -r", current_user))
+      if(ok == 0){
+        message("Crontab cleared.")  
+      }
     } else {
       message("No action taken.")
     }
   } else {
-    system("crontab -r")
+    system(sprintf("crontab -u %s -r", current_user))
   }
   
 }

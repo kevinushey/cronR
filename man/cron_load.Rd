@@ -4,12 +4,14 @@
 \alias{cron_load}
 \title{Load a crontab from file}
 \usage{
-cron_load(file, user = "")
+cron_load(file, user = "", ask = TRUE)
 }
 \arguments{
 \item{file}{The file location of a crontab.}
 
 \item{user}{The user for whom we will be loading a crontab.}
+
+\item{ask}{Boolean; show prompt asking for validation}
 }
 \description{
 Load a crontab from file

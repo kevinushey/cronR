@@ -38,10 +38,13 @@
 #' @param dry_run Boolean; if \code{TRUE} we do not submit the cron job; 
 #'   instead we return the parsed text that would be submitted as a cron job.
 #' @param user The user whose cron jobs we wish to examine.
+#' @param ask Boolean; show prompt asking for validation
 #' @export
 #' @examples 
-#' \dontrun{
-#' f <- system.file(package = "cronR", "extdata", "helloworld.R")
+#' \dontshow{if(interactive())
+#' \{
+#' }
+#' f   <- system.file(package = "cronR", "extdata", "helloworld.R")
 #' cmd <- cron_rscript(f)
 #' cmd
 #' 
@@ -51,7 +54,7 @@
 #' cron_njobs()
 #' 
 #' cron_ls()
-#' cron_clear(ask=FALSE)
+#' cron_clear(ask=TRUE)
 #' cron_ls()
 #' 
 #' cmd <- cron_rscript(f, rscript_args = c("productx", "arg2", "123"))
@@ -68,10 +71,12 @@
 #' cron_add(cmd, frequency = '@reboot', id = 'job9', description = 'Good morning')
 #' cron_add(cmd, frequency = '*/15 * * * *', id = 'job10', description = 'Every 15 min')   
 #' cron_ls()
-#' cron_clear(ask=FALSE)
+#' cron_clear(ask=TRUE)
+#' \dontshow{
+#' \}
 #' }
 cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week, months,
-  id, tags="", description="", dry_run=FALSE, user="") {
+  id, tags="", description="", dry_run=FALSE, user="", ask=TRUE) {
   
   crontab <- tryCatch(parse_crontab(user=user),
     error=function(e) {
@@ -201,6 +206,12 @@ cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week
                       header,
                       paste(frequency, job$command, sep=" ")
     )
+  }
+  cat(sep="", "Are you sure you want to add the specified cron job: '", job$command, "'? [y/n]: ")
+  input <- tolower(scan(what=character(), n=1, quiet=TRUE))
+  if (!input %in% "y") {
+    message("No action taken.")
+    return(invisible())
   }
   
   

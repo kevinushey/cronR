@@ -16,7 +16,8 @@ cron_add(
   tags = "",
   description = "",
   dry_run = FALSE,
-  user = ""
+  user = "",
+  ask = TRUE
 )
 
 cronjob(
@@ -30,7 +31,8 @@ cronjob(
   tags = "",
   description = "",
   dry_run = FALSE,
-  user = ""
+  user = "",
+  ask = TRUE
 )
 }
 \arguments{
@@ -65,6 +67,8 @@ of cron jobs.}
 instead we return the parsed text that would be submitted as a cron job.}
 
 \item{user}{The user whose cron jobs we wish to examine.}
+
+\item{ask}{Boolean; show prompt asking for validation}
 }
 \description{
 Generate a cron job, and pass it to crontab.
@@ -85,8 +89,10 @@ is
 \code{cron_add(<command>, "monthly", days_of_month="15th")}
 }
 \examples{
-\dontrun{
-f <- system.file(package = "cronR", "extdata", "helloworld.R")
+\dontshow{if(interactive())
+\{
+}
+f   <- system.file(package = "cronR", "extdata", "helloworld.R")
 cmd <- cron_rscript(f)
 cmd
 
@@ -96,7 +102,7 @@ cron_add(command = cmd, frequency = 'daily', at='7AM', id = 'test2')
 cron_njobs()
 
 cron_ls()
-cron_clear(ask=FALSE)
+cron_clear(ask=TRUE)
 cron_ls()
 
 cmd <- cron_rscript(f, rscript_args = c("productx", "arg2", "123"))
@@ -113,6 +119,8 @@ cron_add(cmd, frequency = 'monthly', id = 'job8', at = '10:30',
 cron_add(cmd, frequency = '@reboot', id = 'job9', description = 'Good morning')
 cron_add(cmd, frequency = '*/15 * * * *', id = 'job10', description = 'Every 15 min')   
 cron_ls()
-cron_clear(ask=FALSE)
+cron_clear(ask=TRUE)
+\dontshow{
+\}
 }
 }

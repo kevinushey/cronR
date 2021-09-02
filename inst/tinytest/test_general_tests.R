@@ -1,5 +1,5 @@
 
-expect_silent({
+tinytest::expect_silent({
   cron_ls()
   cron_njobs()
   cron_add("testing!", id="abc", tags=c("test1", "test2"),
@@ -21,12 +21,12 @@ expect_silent({
   cron_ls()
   cron_rm("123")
   cron_ls()
-  cron_clear(FALSE)
+  cron_clear(ask = TRUE)
   
   f <- system.file("extdata", "example.cron", package = "cronR")
   cron_load(file=f)
   cron_ls()
   cron_njobs()
   cron_ls("abc")
-  cron_clear(FALSE)
+  cron_clear(ask = TRUE) 
 })
