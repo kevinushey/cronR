@@ -6,11 +6,13 @@
 #' @export
 cron_load <- function(file, user="", ask=TRUE) {
   stopifnot(is.character(file) && file.exists(file))
-  cat(sep="", "Are you sure you want to load the cron jobs available at '", file, "'? [y/n]: ")
-  input <- tolower(scan(what=character(), n=1, quiet=TRUE))
-  if (!input %in% "y") {
-    message("No action taken.")
-    return(invisible())
+  if(ask){
+    cat(sep="", "Are you sure you want to load the cron jobs available at '", file, "'? [y/n]: ")
+    input <- tolower(scan(what=character(), n=1, quiet=TRUE))
+    if (!input %in% "y") {
+      message("No action taken.")
+      return(invisible())
+    }
   }
   if (user == "") {
     system(paste("crontab", file))
