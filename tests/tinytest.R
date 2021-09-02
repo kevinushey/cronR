@@ -1,3 +1,5 @@
 if(requireNamespace("tinytest", quietly=TRUE)){
-  tinytest::test_package("cronR", at_home = interactive())
+  if(interactive()){
+    tinytest::test_package("cronR")  
+  }
 }
