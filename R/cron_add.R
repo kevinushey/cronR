@@ -39,6 +39,8 @@
 #'   instead we return the parsed text that would be submitted as a cron job.
 #' @param user The user whose cron jobs we wish to examine.
 #' @param ask Boolean; show prompt asking for validation
+#' @param env Named character; set environment variables for a cron job.
+#'   Specify `Sys.getenv()` to inherit the variables from the current R session.
 #' @export
 #' @examples 
 #' \dontshow{if(interactive())
@@ -76,8 +78,11 @@
 #' \}
 #' }
 cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week, months,
-  id, tags="", description="", dry_run=FALSE, user="", ask=TRUE) {
+  id, tags="", description="", dry_run=FALSE, user="", ask=TRUE, env=character()) {
   
+  if (length(env) > 0L && is.null(names(env))) {
+    stop("The argument `env` must be a named vector.")
+  }
   crontab <- tryCatch(parse_crontab(user=user),
     error=function(e) {
       return( character() )
@@ -194,7 +199,8 @@ cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week
     "## cronR job",
     paste0("## id:   ", id),
     paste0("## tags: ", paste(tags, collapse=", ")),
-    paste0("## desc: ", description)
+    paste0("## desc: ", description),
+    if (length(env) > 0L) paste(paste0(names(env), "=", env), collapse = "\n")
   )
   if(frequency %in% c("minutely", "hourly", "daily", "monthly", "yearly")){
     job_str <- paste( sep="\n", collapse="\n",
