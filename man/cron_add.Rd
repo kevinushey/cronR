@@ -17,7 +17,8 @@ cron_add(
   description = "",
   dry_run = FALSE,
   user = "",
-  ask = TRUE
+  ask = TRUE,
+  env = character()
 )
 
 cronjob(
@@ -32,7 +33,8 @@ cronjob(
   description = "",
   dry_run = FALSE,
   user = "",
-  ask = TRUE
+  ask = TRUE,
+  env = character()
 )
 }
 \arguments{
@@ -69,6 +71,9 @@ instead we return the parsed text that would be submitted as a cron job.}
 \item{user}{The user whose cron jobs we wish to examine.}
 
 \item{ask}{Boolean; show prompt asking for validation}
+
+\item{env}{Named character; set environment variables for a cron job.
+Specify `Sys.getenv()` to inherit the variables from the current R session.}
 }
 \description{
 Generate a cron job, and pass it to crontab.
