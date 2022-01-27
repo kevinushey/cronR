@@ -68,16 +68,6 @@ cron_clear(ask = TRUE)
 
 By default, when you use the functions `cron_add`, `cron_rm`, `cron_clear`, `cron_load`, a prompt will ask for your permission to update the cron schedule, unless you put the argument `ask=FALSE` in each of these functions, in which case you automatically allow to update the schedule. (new since R package version 0.6.0)
 
-- Consider using argument `env` when calling `cron_add` if you need specific environment variables to be used in your script. E.g. 
-
-```
-cmd <- cron_rscript("/path/to/your/script.R")
-cron_add(cmd, frequency = 'minutely', id = 'job1', description = 'Customers', 
-         env = c(LANG = "en_US.UTF-8", R_LIBS_USER = Sys.getenv("R_LIBS_USER"), YOUR_PROJECT_XYZ = getwd()), 
-         ask = FALSE, dry_run = TRUE)
-```
-
-
 
 Install
 -----------
@@ -102,6 +92,15 @@ Notes
 -----------
 
 - Consider adding `options(echo = TRUE)` at the start of your R scripts in order to debug your scripts in case of errors.
+- Consider using argument `env` when calling `cron_add` if you need specific environment variables to be used in your script. E.g. 
+
+```
+cmd <- cron_rscript("/path/to/your/script.R")
+cron_add(cmd, frequency = 'minutely', id = 'job1', description = 'Customers', 
+         env = c(LANG = "en_US.UTF-8", R_LIBS_USER = Sys.getenv("R_LIBS_USER"), YOUR_PROJECT_XYZ = getwd()), 
+         ask = FALSE, dry_run = TRUE)
+```
+
 - Currently, `cronR` does not preserve or handle cron jobs not
 generated through the package. This will be handled some time in
 the future. To be safe, you should run `cron_save("cron.backup")`
