@@ -92,7 +92,7 @@ Notes
 -----------
 
 - Consider adding `options(echo = TRUE)` at the start of your R scripts in order to debug your scripts in case of errors.
-- Consider using argument `env` when calling `cron_add` if you need specific environment variables to be used in your script. E.g. 
+- Consider using argument `env` when calling `cron_add` if you need specific environment variables to be used in your script, These will be prepended to your script. E.g. as follows where you replace dry_run to FALSE to add it to your cron job list.
 
 ```
 cmd <- cron_rscript("/path/to/your/script.R")
