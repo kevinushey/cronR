@@ -13,8 +13,6 @@ URL: https://github.com/bnosac/cronR
 Imports: 
     digest
 Suggests: 
-    knitr,
-    rmarkdown,
     miniUI,
     shiny (>= 0.11),
     shinyFiles (>= 0.6.0),
