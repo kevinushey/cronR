@@ -4,6 +4,7 @@ Package: cronR
 Version: 0.6.1 [2021-01-27]
 
 - cron_add gains an argument, env, which sets environment variables for a cron job by a named vector.
+- remove VignetteBuilder entry in DESCRIPTION
 
 Version: 0.6.0 [2021-09-02]
 
