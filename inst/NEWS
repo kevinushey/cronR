@@ -1,6 +1,10 @@
 Package: cronR
 ================
 
+Version: 0.6.2 [2022-02-15]
+
+- Call "crontab -r" without "-u user" when the user parameter is empty.
+
 Version: 0.6.1 [2021-01-27]
 
 - cron_add gains an argument, env, which sets environment variables for a cron job by a named vector.
