@@ -20,27 +20,24 @@
 #' \}
 #' }
 cron_clear <- function(ask=TRUE, user="") {
-  
-  if (user == "")
-    current_user <- Sys.getenv("USER")
-  else
-    current_user <- user
-  
   if (ask) {
-    cat( sep="", "Are you sure you want to clear all cron jobs for '", 
-      current_user, "'? [y/n]: ")
+    if (user == "")
+      cat( sep="", "Are you sure you want to clear all your cron jobs? [y/n]: ")
+    else
+      cat( sep="", "Are you sure you want to clear all cron jobs for '",
+        user, "'? [y/n]: ")
     input <- tolower(scan(what=character(), n=1, quiet=TRUE))
-    if (input == "y") {
-      ok <- system(sprintf("crontab -u %s -r", current_user))
-      if(ok == 0){
-        message("Crontab cleared.")  
-      }
-    } else {
+    if (input != "y") {
       ok <- 0
       message("No action taken.")
+      return (invisible(ok))
     }
-  } else {
-    ok <- system(sprintf("crontab -u %s -r", current_user))
   }
+  if (user == "")
+    ok <- system("crontab -r")
+  else
+    ok <- system(sprintf("crontab -u %s -r", user))
+  if (ok == 0)
+    message("Crontab cleared.")
   return (invisible(ok))
 }
