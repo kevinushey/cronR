@@ -1,9 +1,10 @@
 Package: cronR
 ================
 
-Version: 0.6.2 [2022-02-15]
+Version: 0.6.2 [2022-02-16]
 
 - Call "crontab -r" without "-u user" when the user parameter is empty.
+- Omit empty line when no env is passed in cron_add
 
 Version: 0.6.1 [2021-01-27]
 
