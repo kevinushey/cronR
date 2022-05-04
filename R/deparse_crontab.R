@@ -17,5 +17,9 @@ deparse_crontab <- function(parsed_crontab) {
     ))
   }))
   other <- parsed_crontab$other
-  return (paste(cronR, other, sep="\n", collapse="\n"))
+  if(cronR == ""){
+    return (paste(other, "", sep="\n", collapse="\n"))
+  }else{
+    return (paste(other, cronR, "", sep="\n", collapse="\n"))  
+  }
 }
