@@ -31,17 +31,39 @@ cron_rscript <- function(rscript,
                          log_timestamp = FALSE,
                          workdir = NULL) {
   stopifnot(file.exists(rscript))
-  if(length(rscript_args) > 0){
+  # If rscript_args are provided, paste them together and collapse on " " and then append a " ". If
+  # no rscript_args are provided, return an empty character string.
+  if(!rscript_args == ""){
     rscript_args <- paste(rscript_args, collapse = " ")
+    rscript_args <- paste0(rscript_args, " ")
   }
+  # Check to see if rscript includes absolute path to the file, if it does not, then prepend the
+  # working directory to the base file name.
   if(basename(rscript) == rscript){
     rscript <- file.path(getwd(), rscript)
   }
+  # Generate appropriate command for appending to the log file or overwriting the log file
   if(log_append){
-    cmd <- sprintf('%s %s %s >> %s 2>&1', cmd, shQuote(rscript), rscript_args, shQuote(rscript_log))  
+    cmd <-
+      sprintf(
+        'temp_log=$(mktemp) && %s %s %s> $temp_log 2>&1 || cat $temp_log && cat $temp_log >> %s && rm $temp_log',
+        cmd,
+        shQuote(rscript),
+        rscript_args,
+        shQuote(rscript_log)
+      )
   }else{
-    cmd <- sprintf('%s %s %s > %s 2>&1', cmd, shQuote(rscript), rscript_args, shQuote(rscript_log))  
+    cmd <-
+      sprintf(
+        'temp_log=$(mktemp) && %s %s %s> $temp_log 2>&1 || cat $temp_log && cat $temp_log > %s && rm $temp_log',
+        cmd,
+        shQuote(rscript),
+        rscript_args,
+        shQuote(rscript_log)
+      )
   }
+  # if workdir is set, then prepend the command to change the directory to the specified working
+  # directory
   if(!is.null(workdir)){
     cmd <- sprintf("%s %s %s %s",  "cd", shQuote(workdir), "&&", cmd)
   }
