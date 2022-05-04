@@ -21,3 +21,4 @@ License: MIT + file LICENSE
 OS_type: unix
 SystemRequirements: cron
 RoxygenNote: 7.1.1
+Encoding: UTF-8
