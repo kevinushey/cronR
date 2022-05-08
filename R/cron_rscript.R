@@ -1,5 +1,5 @@
 #' @title Create a command to execute an R script which can be scheduled with cron_add
-#' @description Create a command to execute an R script which can be scheduled with cron_add where the stdin and stderr will be passed on to a log
+#' @description Create a command to execute an R script which can be scheduled with cron_add where the stdout and stderr will be passed on to a log
 #' @param rscript character string with the path to an R script with .r or .R extension
 #' @param rscript_log where to put the log, defaults in the same directory and with the same filename as \code{rscript} but with  extension .log.
 #' @param rscript_args a character string with extra arguments to be passed on to Rscript
@@ -8,6 +8,8 @@
 #' @param log_timestamp logical, indicating to append a timestamp to the script log filename in the default argument of \code{rscript_log}. 
 #' This will only work if the path to the log folder does not contain spaces.
 #' @param workdir If provided, Rscript will be run from this working directory.
+#' @param output_on_error logical, indicating if the command should also output stdout and stderr
+#'   (in addition to sending them to the log) whenever the R script has a non-zero exit status.
 #' @return a character string with a command which can e.g. be put as a cronjob for running a simple R script at specific timepoints
 #' @export
 #' @examples
@@ -29,7 +31,8 @@ cron_rscript <- function(rscript,
                          cmd = file.path(Sys.getenv("R_HOME"), "bin", "Rscript"),
                          log_append = TRUE,
                          log_timestamp = FALSE,
-                         workdir = NULL) {
+                         workdir = NULL,
+                         output_on_error  = FALSE) {
   stopifnot(file.exists(rscript))
   # If rscript_args are provided, paste them together and collapse on " " and then append a " ". If
   # no rscript_args are provided, return an empty character string.
@@ -43,24 +46,32 @@ cron_rscript <- function(rscript,
     rscript <- file.path(getwd(), rscript)
   }
   # Generate appropriate command for appending to the log file or overwriting the log file
-  if(log_append){
-    cmd <-
-      sprintf(
-        'temp_log=$(mktemp) && %s %s %s> $temp_log 2>&1 || cat $temp_log && cat $temp_log >> %s && rm $temp_log',
-        cmd,
-        shQuote(rscript),
-        rscript_args,
-        shQuote(rscript_log)
-      )
+  if(output_on_error){
+    if(log_append){
+      cmd <-
+        sprintf(
+          'temp_log=$(mktemp) && %s %s %s> $temp_log 2>&1 || cat $temp_log && cat $temp_log >> %s && rm $temp_log',
+          cmd,
+          shQuote(rscript),
+          rscript_args,
+          shQuote(rscript_log)
+        )
+    }else{
+      cmd <-
+        sprintf(
+          'temp_log=$(mktemp) && %s %s %s> $temp_log 2>&1 || cat $temp_log && cat $temp_log > %s && rm $temp_log',
+          cmd,
+          shQuote(rscript),
+          rscript_args,
+          shQuote(rscript_log)
+        )
+    }
   }else{
-    cmd <-
-      sprintf(
-        'temp_log=$(mktemp) && %s %s %s> $temp_log 2>&1 || cat $temp_log && cat $temp_log > %s && rm $temp_log',
-        cmd,
-        shQuote(rscript),
-        rscript_args,
-        shQuote(rscript_log)
-      )
+    if(log_append){
+      cmd <- sprintf('%s %s %s >> %s 2>&1', cmd, shQuote(rscript), rscript_args, shQuote(rscript_log)) 
+    }else{
+      cmd <- sprintf('%s %s %s > %s 2>&1', cmd, shQuote(rscript), rscript_args, shQuote(rscript_log))
+    }
   }
   # if workdir is set, then prepend the command to change the directory to the specified working
   # directory
