@@ -35,7 +35,7 @@ cron_rscript <- function(rscript,
   # no rscript_args are provided, return an empty character string.
   if(!rscript_args == ""){
     rscript_args <- paste(rscript_args, collapse = " ")
-    rscript_args <- paste0(rscript_args, " ")
+    rscript_args <- paste(rscript_args, " ", sep = "")
   }
   # Check to see if rscript includes absolute path to the file, if it does not, then prepend the
   # working directory to the base file name.
