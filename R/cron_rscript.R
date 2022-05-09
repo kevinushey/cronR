@@ -8,8 +8,12 @@
 #' @param log_timestamp logical, indicating to append a timestamp to the script log filename in the default argument of \code{rscript_log}. 
 #' This will only work if the path to the log folder does not contain spaces.
 #' @param workdir If provided, Rscript will be run from this working directory.
-#' @param output_on_error logical, indicating if the command should also output stdout and stderr
-#'   (in addition to sending them to the log) whenever the R script has a non-zero exit status.
+#' @param type a character string specifying the type of command to generate:
+#'   \describe{
+#'     \item{default}{The command will send stdout and stderr to the log file but will never output these streams.}
+#'     \item{outuput_always}{The command will send stdout and stderr to the log file in addtion to emitting them as an output.}
+#'     \item{outuput_on_error}{The command will send stdout and stderr to the log file, and it will emit them as an output when the R script has a non-zero exit status.}
+#'   }
 #' @return a character string with a command which can e.g. be put as a cronjob for running a simple R script at specific timepoints
 #' @export
 #' @examples
@@ -32,8 +36,9 @@ cron_rscript <- function(rscript,
                          log_append = TRUE,
                          log_timestamp = FALSE,
                          workdir = NULL,
-                         output_on_error  = FALSE) {
+                         type = c("default", "output_on_error", "output_always")) {
   stopifnot(file.exists(rscript))
+  type = match.arg(type)
   # If rscript_args are provided, paste them together and collapse on " " and then append a " ". If
   # no rscript_args are provided, return an empty character string.
   if(!rscript_args == ""){
@@ -45,8 +50,36 @@ cron_rscript <- function(rscript,
   if(basename(rscript) == rscript){
     rscript <- file.path(getwd(), rscript)
   }
-  # Generate appropriate command for appending to the log file or overwriting the log file
-  if(output_on_error){
+  # Generate command based on specified type and log_append options
+  if(type == "default"){
+    if(log_append){
+      cmd <- sprintf('%s %s %s >> %s 2>&1', cmd, shQuote(rscript), rscript_args, shQuote(rscript_log)) 
+    }else{
+      cmd <- sprintf('%s %s %s > %s 2>&1', cmd, shQuote(rscript), rscript_args, shQuote(rscript_log))
+    }
+  }
+  if(type == "output_always"){
+    if(log_append){
+      cmd <-
+        sprintf(
+          'temp_log=$(mktemp) && %s %s %s> $temp_log 2>&1 ; cat $temp_log && cat $temp_log >> %s && rm $temp_log',
+          cmd,
+          shQuote(rscript),
+          rscript_args,
+          shQuote(rscript_log)
+        )
+    }else{
+      cmd <-
+        sprintf(
+          'temp_log=$(mktemp) && %s %s %s> $temp_log 2>&1 ; cat $temp_log && cat $temp_log > %s && rm $temp_log',
+          cmd,
+          shQuote(rscript),
+          rscript_args,
+          shQuote(rscript_log)
+        )
+    }
+  }
+  if(type == "output_on_error"){
     if(log_append){
       cmd <-
         sprintf(
@@ -65,12 +98,6 @@ cron_rscript <- function(rscript,
           rscript_args,
           shQuote(rscript_log)
         )
-    }
-  }else{
-    if(log_append){
-      cmd <- sprintf('%s %s %s >> %s 2>&1', cmd, shQuote(rscript), rscript_args, shQuote(rscript_log)) 
-    }else{
-      cmd <- sprintf('%s %s %s > %s 2>&1', cmd, shQuote(rscript), rscript_args, shQuote(rscript_log))
     }
   }
   # if workdir is set, then prepend the command to change the directory to the specified working
