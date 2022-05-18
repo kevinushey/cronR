@@ -35,8 +35,8 @@ This will only work if the path to the log folder does not contain spaces.}
 \item{type}{a character string specifying the type of command to generate:
 \describe{
   \item{default}{The command will send stdout and stderr to the log file but will never output these streams.}
-  \item{outuput_always}{The command will send stdout and stderr to the log file in addtion to emitting them as an output.}
-  \item{outuput_on_error}{The command will send stdout and stderr to the log file, and it will emit them as an output when the R script has a non-zero exit status.}
+  \item{output_always}{The command will send stdout and stderr to the log file in addition to emitting them as an output.}
+  \item{output_on_error}{The command will send stdout and stderr to the log file, and it will emit them as an output when the R script has a non-zero exit status.}
 }}
 }
 \value{
@@ -58,4 +58,7 @@ cron_rscript(f, log_append = FALSE, log_timestamp = TRUE)
 ## run from home directory
 cron_rscript(f, workdir = normalizePath("~"))
 
+## other non-default options for type
+cron_rscript(f, type = "output_on_error")
+cron_rscript(f, type = "output_always")
 }
