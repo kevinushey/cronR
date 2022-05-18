@@ -4,6 +4,7 @@ Package: cronR
 Version: 0.6.3 [2022-05-09]
 
 - cron_rscript gains an argument, type, which allows for different command types such as those that generate an output on error. The current command type is the "default" value.
+- cron_rscript gains an argument, ... allowing to add extra options specific to the type
 - Changes to deparse_crontab(): all cronR jobs will be placed at the bottom of the crontab now instead of the top.
 
 Version: 0.6.2 [2022-02-16]

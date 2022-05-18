@@ -13,7 +13,8 @@ cron_rscript(
   log_append = TRUE,
   log_timestamp = FALSE,
   workdir = NULL,
-  type = c("default", "output_on_error", "output_always")
+  type = c("default", "output_on_error", "output_always"),
+  ...
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ This will only work if the path to the log folder does not contain spaces.}
   \item{output_always}{The command will send stdout and stderr to the log file in addition to emitting them as an output.}
   \item{output_on_error}{The command will send stdout and stderr to the log file, and it will emit them as an output when the R script has a non-zero exit status.}
 }}
+
+\item{...}{further arguments, specific to argument \code{type}, currently not used}
 }
 \value{
 a character string with a command which can e.g. be put as a cronjob for running a simple R script at specific timepoints
