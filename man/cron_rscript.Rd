@@ -12,7 +12,8 @@ cron_rscript(
   cmd = file.path(Sys.getenv("R_HOME"), "bin", "Rscript"),
   log_append = TRUE,
   log_timestamp = FALSE,
-  workdir = NULL
+  workdir = NULL,
+  type = c("default", "output_on_error", "output_always")
 )
 }
 \arguments{
@@ -30,12 +31,19 @@ cron_rscript(
 This will only work if the path to the log folder does not contain spaces.}
 
 \item{workdir}{If provided, Rscript will be run from this working directory.}
+
+\item{type}{a character string specifying the type of command to generate:
+\describe{
+  \item{default}{The command will send stdout and stderr to the log file but will never output these streams.}
+  \item{outuput_always}{The command will send stdout and stderr to the log file in addtion to emitting them as an output.}
+  \item{outuput_on_error}{The command will send stdout and stderr to the log file, and it will emit them as an output when the R script has a non-zero exit status.}
+}}
 }
 \value{
 a character string with a command which can e.g. be put as a cronjob for running a simple R script at specific timepoints
 }
 \description{
-Create a command to execute an R script which can be scheduled with cron_add where the stdin and stderr will be passed on to a log
+Create a command to execute an R script which can be scheduled with cron_add where the stdout and stderr will be passed on to a log
 }
 \examples{
 f <- system.file(package = "cronR", "extdata", "helloworld.R")
