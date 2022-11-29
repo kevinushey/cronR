@@ -1,6 +1,10 @@
 Package: cronR
 ================
 
+Version: 0.6.4 [2022-11-29]
+
+- cron_add, cron_rm now also allow to add/remove cron jobs from another user by passing the user argument
+
 Version: 0.6.3 [2022-05-09]
 
 - cron_rscript gains an argument, type, which allows for different command types such as those that generate an output on error. The current command type is the "default" value.

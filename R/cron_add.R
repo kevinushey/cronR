@@ -232,9 +232,16 @@ cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week
   
   if (!dry_run) {
     
-    old_crontab <- suppressWarnings(
-      system("crontab -l", intern=TRUE, ignore.stderr=TRUE)
-    )
+    if(missing(user)){
+      old_crontab <- suppressWarnings(
+        system("crontab -l", intern=TRUE, ignore.stderr=TRUE)
+      )  
+    }else{
+      old_crontab <- suppressWarnings(
+        system(sprintf("crontab -u %s -l", user), intern=TRUE, ignore.stderr=TRUE)
+      )
+    }
+    
     
     old_crontab[ old_crontab == " " ] <- ""
     
@@ -250,7 +257,12 @@ cron_add <- function(command, frequency="daily", at, days_of_month, days_of_week
     tempfile <- tempfile()
     on.exit( unlink(tempfile) )
     cat(new_crontab, "\n", file=tempfile)
-    system( paste("crontab", tempfile) )
+    if(missing(user)){
+      system( paste("crontab", tempfile) ) 
+    }else{
+      system( paste("crontab -u", user, tempfile) )
+    }
+    
   }
   
   return (invisible(job))

@@ -59,12 +59,20 @@ cron_rm <- function(id, dry_run=FALSE, user="", ask=TRUE) {
   
   if (!dry_run) {
     if (!(length(new_crontab))) {
-      system( paste("crontab -r") )
+      if(missing(user)){
+        system( paste("crontab -r") )
+      }else{
+        system( paste("crontab -r -u", user) )
+      }
     } else {
       tempfile <- tempfile()
       on.exit( unlink(tempfile) )
       cat(deparsed, file=tempfile)
-      system( paste("crontab", tempfile) )
+      if(missing(user)){
+        system( paste("crontab", tempfile) )
+      }else{
+        system( paste("crontab -u", user, tempfile) )
+      }
     }
   }
   
