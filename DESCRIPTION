@@ -1,7 +1,7 @@
 Package: cronR
 Type: Package
 Title: Schedule R Scripts and Processes with the 'cron' Job Scheduler
-Version: 0.6.4
+Version: 0.6.5
 Authors@R: c(
     person("Jan", "Wijffels", role = c("aut", "cre", "cph"), email = "jwijffels@bnosac.be"), 
     person("BNOSAC", role = "cph"), 
