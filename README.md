@@ -79,8 +79,11 @@ sudo apt-get install -y cron
 sudo cron start
 ```
 
-If you want the RStudio add-in to work, also install miniUI, shiny and shinyFiles
+- For regular users, install the package from your local CRAN mirror with `install.packages("cronR")`, for installing the development version of this package: `remotes::install_github("bnosac/cronR")`
+- If you want the RStudio add-in to work, also install miniUI, shiny and shinyFiles
+
 ```
+install.packages("cronR")
 install.packages('miniUI')
 install.packages('shiny')
 install.packages('shinyFiles')

@@ -45,7 +45,7 @@ cron_rscript <- function(rscript,
   type = match.arg(type)
   # If rscript_args are provided, paste them together and collapse on " " and then append a " ". If
   # no rscript_args are provided, return an empty character string.
-  if(!rscript_args == ""){
+  if(!missing(rscript_args)){
     rscript_args <- paste(rscript_args, collapse = " ")
     rscript_args <- paste(rscript_args, " ", sep = "")
   }
