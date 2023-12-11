@@ -27,7 +27,7 @@ cron_clear <- function(ask=TRUE, user="") {
       cat( sep="", "Are you sure you want to clear all cron jobs for '",
         user, "'? [y/n]: ")
     input <- tolower(scan(what=character(), n=1, quiet=TRUE))
-    if (input != "y") {
+    if (length(input) == 0 || input != "y") {
       ok <- 0
       message("No action taken.")
       return (invisible(ok))

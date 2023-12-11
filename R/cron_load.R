@@ -9,7 +9,7 @@ cron_load <- function(file, user="", ask=TRUE) {
   if(ask){
     cat(sep="", "Are you sure you want to load the cron jobs available at '", file, "'? [y/n]: ")
     input <- tolower(scan(what=character(), n=1, quiet=TRUE))
-    if (!input %in% "y") {
+    if (length(input) == 0 || input != "y") {
       message("No action taken.")
       return(invisible())
     }
