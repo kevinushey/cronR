@@ -38,9 +38,7 @@ cron_rm <- function(id, dry_run=FALSE, user="", ask=TRUE) {
   if (n_removed == 0) {
     message("No cron job with id matched to '", id, "' found.")
     return (invisible(NULL))
-  } else {
-    message("Removed ", n_removed, " cron job", if (n_removed != 1) "s" else "", ".")
-  }
+  } 
   
   new_crontab <- list(
     cronR=crontab$cronR[to_keep],
@@ -51,7 +49,7 @@ cron_rm <- function(id, dry_run=FALSE, user="", ask=TRUE) {
   if(ask){
     cat(sep="", "Are you sure you want to remove the specified cron job with id '", id, "'? [y/n]: ")
     input <- tolower(scan(what=character(), n=1, quiet=TRUE))
-    if (!input %in% "y") {
+    if (length(input) == 0 || input != "y") {
       message("No action taken.")
       return(invisible())
     } 
@@ -74,6 +72,7 @@ cron_rm <- function(id, dry_run=FALSE, user="", ask=TRUE) {
         system( paste("crontab -u", user, tempfile) )
       }
     }
+    message("Removed ", n_removed, " cron job", if (n_removed != 1) "s" else "", ".")
   }
   
   return (invisible(new_crontab))
